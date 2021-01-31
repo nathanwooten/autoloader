@@ -123,6 +123,7 @@ class Autoloader {
 
 		$vendorName = $this->normalize( $this->getVendor() );
 		$directory = $this->normalize( $this->getBase() );
+		$interface = $this->normalize( $interface, false );
 
 		$file = str_replace(
 
