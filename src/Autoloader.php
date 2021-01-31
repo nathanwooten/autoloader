@@ -19,6 +19,8 @@ class Autoloader {
 	public $vendor;
 	public $directory;
 
+	public $extension = '.php';
+
 	public function load( $vendor, $directory ) {
 
 		$this->setVendor( $vendor );
@@ -110,10 +112,6 @@ class Autoloader {
 
 	public function autoload( $interface ) {
 
-		if ( ! $this->init ) {
-			$this->init();
-		}
-
 		$file = $this->locate( $interface );
 		if ( $file ) {
 
@@ -131,6 +129,8 @@ class Autoloader {
 		$directory = $this->normalize( $this->getBase() );
 		$interface = $this->normalize( $interface, false );
 
+		$extension = $this->getExtension();
+
 		$file = str_replace(
 
 			$vendorName,
@@ -138,7 +138,7 @@ class Autoloader {
 
 			$interface
 
-		) . '.php';
+		) . $extension;
 
 			$exists = $this->exists;
 		if ( $exists( $file ) ) {
@@ -160,6 +160,21 @@ class Autoloader {
 		}
 
 		return $interfaces;
+
+	}
+
+	public function setExtension( $extension )
+	{
+
+		$extension = '.' . ltrim( $extension, '.' );
+		$this->extension = $extension;
+
+	}
+
+	public function getExtension()
+	{
+
+		return $this->extension;
 
 	}
 
