@@ -8,7 +8,6 @@ if ( ! class_exists( $class ) ) {
 class Autoloader {
 
 	protected $init = false;
-
 	protected $exists = 'file_exists';
 
 	public $vendor;
