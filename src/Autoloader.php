@@ -3,7 +3,7 @@
 namespace Pf\Autoloader;
 
 	global $classLoaded;
-	$classLoaded = __NAMESPACE__ . '\\' . rtrim( basename( __FILE__ ), '.php' );
+	$classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
 
 if ( class_exists( $classLoaded ) ) {
 	unset( $classLoaded );
