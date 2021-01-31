@@ -6,6 +6,7 @@ namespace Pf\Autoloader;
 	$classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
 
 if ( class_exists( $classLoaded ) ) {
+
 	unset( $classLoaded );
 	return;
 }
