@@ -156,12 +156,14 @@ class Autoloader {
 
 	}
 
-	public function normalize( $item )
+	public function normalize( $item, $append = true )
 	{
 
 		$item = str_replace( ['\\', '/'], DIRECTORY_SEPARATOR, $item );
-
-		$item = rtrim( $item, DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR;
+		$item = rtrim( $item, DIRECTORY_SEPARATOR );
+		if ( $append ) {
+			$item .= DIRECTORY_SEPARATOR;
+		}
 
 		return $item;
 
