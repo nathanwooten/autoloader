@@ -5,7 +5,7 @@ namespace Pf\Autoloader;
 	global $classLoaded;
 	$classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
 
-if ( class_exists( $classLoaded ) ) {
+if ( class_exists( $classLoaded, false ) ) {
 
 	unset( $classLoaded );
 	return;
