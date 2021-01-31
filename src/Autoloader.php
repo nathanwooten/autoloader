@@ -7,7 +7,7 @@ namespace Pf\Autoloader;
 
 if ( class_exists( $classLoaded ) ) {
 	unset( $classLoaded );
-	return true;
+	return;
 }
 
 class Autoloader {
