@@ -7,12 +7,12 @@ if ( ! class_exists( $class ) ) {
 
 class Autoloader {
 
-	public $init = false;
+	protected $init = false;
+
+	protected $exists = 'file_exists';
 
 	public $vendor;
 	public $directory;
-
-	public $exists = 'file_exists';
 
 	public static function factory()
 	{
