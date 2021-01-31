@@ -62,7 +62,7 @@ class Autoloader {
 	}
 
 
-	public function configure( array $config )
+	public function configure( array $config, $callable = true )
 	{
 
 		$result = [];
@@ -70,7 +70,7 @@ class Autoloader {
 		foreach ( $config as $methodName => $args ) {
 
 			$callback = [ $this, $methodName ];
-			if ( ! is_callable( $callback ) ) {
+			if ( ! $callable && ! is_callable( $callback ) ) {
 
 				return false;
 			}
