@@ -2,8 +2,13 @@
 
 namespace Pf\Autoloader;
 
-	$class = __NAMESPACE__ . '\\' . rtrim( basename( __FILE__ ), '.php' );
-if ( ! class_exists( $class ) ) {
+	global $classLoaded;
+	$classLoaded = __NAMESPACE__ . '\\' . rtrim( basename( __FILE__ ), '.php' );
+
+if ( class_exists( $classLoaded ) ) {
+	unset( $classLoaded );
+	return true;
+}
 
 class Autoloader {
 
@@ -12,6 +17,15 @@ class Autoloader {
 
 	public $vendor;
 	public $directory;
+
+	public function load( $vendor, $directory ) {
+
+		$this->setVendor( $vendor );
+		$this->setBase ( $directory );
+
+		$this->init();
+
+	}
 
 	public static function factory()
 	{
@@ -62,15 +76,6 @@ class Autoloader {
 		}
 
 		return $result;
-
-	}
-
-	public function load( $vendor, $directory ) {
-
-		$this->setVendor( $vendor );
-		$this->setBase ( $directory );
-
-		$this->init();
 
 	}
 
@@ -170,5 +175,4 @@ class Autoloader {
 
 	}
 
-}
 }
