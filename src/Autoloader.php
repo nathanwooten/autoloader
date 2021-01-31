@@ -45,10 +45,9 @@ class Autoloader {
 		if ( ! $this->init ) {
 
 				$args = func_get_args();
+			if ( !empty( $args ) ) {
 
-			$configure = empty( $args ) ? [] : $args[0];
-			if ( ! empty( $configure ) ) {
-				$this->configure( $configure );
+				$this->configure( $args[0] );
 			}
 
 			spl_autoload_register( [ $this, 'autoload' ] );
