@@ -173,10 +173,14 @@ class Autoloader {
 
     }
 
-    public function autoloadArray( array $array )
+    public function autoloadArray( array $array, $values = true )
     {
 
         $interfaces = [];
+
+		if ( ! $values ) {
+			$array = array_values( $array );
+		}
 
         for ( $i = 0; $i < count( $array ); ++$i ) {
 
