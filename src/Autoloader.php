@@ -2,6 +2,8 @@
 
 namespace Pf\Autoloader;
 
+use function file_exists;
+
 	global $classLoaded;
 	$classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
 
