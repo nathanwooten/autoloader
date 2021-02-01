@@ -35,7 +35,7 @@ class Autoloader {
 	public static function factory()
 	{
 
-		$instance = new static;
+		$instance = new self;
 		$instance->init( ...func_get_args() );
 
 		return $instance;
