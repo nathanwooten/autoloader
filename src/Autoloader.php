@@ -2,7 +2,17 @@
 
 namespace Pf\Autoloader;
 
+use function array_key_exists;
+use function array_values;
+use function basename;
+use function class_exists;
+use function count;
 use function file_exists;
+use function is_callable;
+use function ltrim;
+use function rtrim;
+use function spl_autoload_register;
+use function str_replace;
 
     global $classLoaded;
     $classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
@@ -15,11 +25,24 @@ if ( class_exists( $classLoaded, false ) ) {
 
 class Autoloader {
 
+
+	/** @property boolean			$init Flag to determine whether or not the autoloader has been registered with spl_autoload_register */
+
     protected $init = false;
+
+	/** @property string			$exists The function used to check if a file exists */
+
     protected $exists = 'file_exists';
 
+	/** @property string			$vendor The namespace of the vendor/package */
+
     public $vendor;
+
+	/** @property directory			$directory The directory of the vendor/package */
+
     public $directory;
+
+	/** @property string			$extension The extension to be used when including files */
 
     public $extension = '.php';
 
@@ -119,6 +142,8 @@ class Autoloader {
 
             return $interface;
         }
+
+		return false;
 
     }
 
