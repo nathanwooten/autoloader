@@ -156,10 +156,12 @@ class Autoloader {
 
 		while( $array ) {
 
-			$interfaces[] = $this->autoload( array_shift( $array ) );
+				$interface = array_shift( $array );
+
+			$status[$interface] = $this->autoload( $interface );
 		}
 
-		return $interfaces;
+		return $status;
 
 	}
 
