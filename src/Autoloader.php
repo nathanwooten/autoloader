@@ -192,4 +192,15 @@ class Autoloader {
 
 	}
 
+	public function getInstance( $vendor )
+	{
+
+		if ( array_key_exists( $vendor, static::$instance ) ) {
+
+			$autoloader = static::$instance[$vendor];
+			return $autoloader;
+		}
+
+	}
+
 }
