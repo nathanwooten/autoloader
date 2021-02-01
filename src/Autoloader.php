@@ -153,9 +153,9 @@ class Autoloader {
 
         $interfaces = [];
 
-        while( $array ) {
+        for ( $i = 0; $i < count( $array ); ++$i ) {
 
-                $interface = array_shift( $array );
+                $interface = $array[$i];
 
             $status[$interface] = $this->autoload( $interface );
         }
