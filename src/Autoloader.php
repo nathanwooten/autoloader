@@ -4,204 +4,203 @@ namespace Pf\Autoloader;
 
 use function file_exists;
 
-	global $classLoaded;
-	$classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
+    global $classLoaded;
+    $classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
 
 if ( class_exists( $classLoaded, false ) ) {
 
-	unset( $classLoaded );
-	return;
+    unset( $classLoaded );
+    return;
 }
 
 class Autoloader {
 
-	protected $init = false;
-	protected $exists = 'file_exists';
+    protected $init = false;
+    protected $exists = 'file_exists';
 
-	public $vendor;
-	public $directory;
+    public $vendor;
+    public $directory;
 
-	public $extension = '.php';
+    public $extension = '.php';
 
-	public function load( $vendor, $directory ) {
+    public function load( $vendor, $directory ) {
 
-		$this->setVendor( $vendor );
-		$this->setBase ( $directory );
+        $this->setVendor( $vendor );
+        $this->setBase ( $directory );
 
-		$this->init();
+        $this->init();
 
-	}
+    }
 
-	public static function factory()
-	{
+    public static function factory()
+    {
 
-		$instance = new self;
-		$instance->init( ...func_get_args() );
+        $instance = new self;
+        $instance->init( ...func_get_args() );
 
-		return $instance;
+        return $instance;
 
-	}
+    }
 
-	public function init() {
+    public function init() {
 
-		if ( ! $this->init ) {
+        if ( ! $this->init ) {
 
-				$args = func_get_args();
-			if ( !empty( $args ) ) {
+                $args = func_get_args();
+            if ( !empty( $args ) ) {
 
-				$this->configure( $args[0] );
-			}
+                $this->configure( $args[0] );
+            }
 
-			spl_autoload_register( [ $this, 'autoload' ] );
+            spl_autoload_register( [ $this, 'autoload' ] );
 
-			$this->init = true;
+            $this->init = true;
 
-		}
+        }
 
-		return $this;
+        return $this;
 
-	}
+    }
 
+    public function configure( array $config, $callable = true )
+    {
 
-	public function configure( array $config, $callable = true )
-	{
+        $result = [];
 
-		$result = [];
+        foreach ( $config as $methodName => $args ) {
 
-		foreach ( $config as $methodName => $args ) {
+            $callback = [ $this, $methodName ];
+            if ( ! $callable && ! is_callable( $callback ) ) {
 
-			$callback = [ $this, $methodName ];
-			if ( ! $callable && ! is_callable( $callback ) ) {
+                 return false;
+            }
 
-				return false;
-			}
+            $result[] = $callback( ...array_values( $args ) );
+        }
 
-			$result[] = $callback( ...array_values( $args ) );
-		}
+        return $result;
 
-		return $result;
+    }
 
-	}
+    public function setVendor( $vendor )
+    {
 
-	public function setVendor( $vendor )
-	{
+        $this->vendor = $vendor;
 
-		$this->vendor = $vendor;
+    }
 
-	}
+    public function getVendor()
+    {
 
-	public function getVendor()
-	{
+        return $this->vendor;
 
-		return $this->vendor;
+    }
 
-	}
+    public function setBase( $directory )
+    {
 
-	public function setBase( $directory )
-	{
+        $this->directory = $directory;
 
-		$this->directory = $directory;
+    }
 
-	}
+    public function getBase()
+    {
 
-	public function getBase()
-	{
+        return $this->directory;
 
-		return $this->directory;
+    }
 
-	}
+    public function autoload( $interface ) {
 
-	public function autoload( $interface ) {
+        $file = $this->locate( $interface );
+        if ( $file ) {
 
-		$file = $this->locate( $interface );
-		if ( $file ) {
+            require_once $file;
 
-			require_once $file;
+            return $interface;
+        }
 
-			return $interface;
-		}
+    }
 
-	}
+    public function locate( $interface )
+    {
 
-	public function locate( $interface )
-	{
+        $vendorName = $this->normalize( $this->getVendor() );
+        $directory = $this->normalize( $this->getBase() );
+        $interface = $this->normalize( $interface, false );
 
-		$vendorName = $this->normalize( $this->getVendor() );
-		$directory = $this->normalize( $this->getBase() );
-		$interface = $this->normalize( $interface, false );
+        $extension = $this->getExtension();
 
-		$extension = $this->getExtension();
+        $file = str_replace(
 
-		$file = str_replace(
+            $vendorName,
+            $directory,
 
-			$vendorName,
-			$directory,
+            $interface
 
-			$interface
+        ) . $extension;
 
-		) . $extension;
+            $exists = $this->exists;
+        if ( $exists( $file ) ) {
 
-			$exists = $this->exists;
-		if ( $exists( $file ) ) {
+            return $file;
+        }
 
-			return $file;
-		}
+    }
 
-	}
+    public function autoloadArray( array $array )
+    {
 
-	public function autoloadArray( array $array )
-	{
+        $interfaces = [];
 
-		$interfaces = [];
+        while( $array ) {
 
-		while( $array ) {
+                $interface = array_shift( $array );
 
-				$interface = array_shift( $array );
+            $status[$interface] = $this->autoload( $interface );
+        }
 
-			$status[$interface] = $this->autoload( $interface );
-		}
+        return $status;
 
-		return $status;
+    }
 
-	}
+    public function setExtension( $extension )
+    {
 
-	public function setExtension( $extension )
-	{
+        $extension = '.' . ltrim( $extension, '.' );
+        $this->extension = $extension;
 
-		$extension = '.' . ltrim( $extension, '.' );
-		$this->extension = $extension;
+    }
 
-	}
+    public function getExtension()
+    {
 
-	public function getExtension()
-	{
+        return $this->extension;
 
-		return $this->extension;
+    }
 
-	}
+    public function normalize( $item, $append = true )
+    {
 
-	public function normalize( $item, $append = true )
-	{
+        $item = str_replace( ['\\', '/'], DIRECTORY_SEPARATOR, $item );
+        $item = rtrim( $item, DIRECTORY_SEPARATOR );
+        if ( $append ) {
+            $item .= DIRECTORY_SEPARATOR;
+        }
 
-		$item = str_replace( ['\\', '/'], DIRECTORY_SEPARATOR, $item );
-		$item = rtrim( $item, DIRECTORY_SEPARATOR );
-		if ( $append ) {
-			$item .= DIRECTORY_SEPARATOR;
-		}
+        return $item;
 
-		return $item;
+    }
 
-	}
+    public function getInstance( $vendor )
+    {
 
-	public function getInstance( $vendor )
-	{
+        if ( array_key_exists( $vendor, static::$instance ) ) {
 
-		if ( array_key_exists( $vendor, static::$instance ) ) {
+            $autoloader = static::$instance[$vendor];
+            return $autoloader;
+        }
 
-			$autoloader = static::$instance[$vendor];
-			return $autoloader;
-		}
-
-	}
+    }
 
 }
