@@ -26,23 +26,23 @@ if ( class_exists( $classLoaded, false ) ) {
 class Autoloader {
 
 
-	/** @property boolean			$init Flag to determine whether or not the autoloader has been registered with spl_autoload_register */
+    /** @property boolean            $init Flag to determine whether or not the autoloader has been registered with spl_autoload_register */
 
     protected $init = false;
 
-	/** @property string			$exists The function used to check if a file exists */
+    /** @property string            $exists The function used to check if a file exists */
 
     protected $exists = 'file_exists';
 
-	/** @property string			$vendor The namespace of the vendor/package */
+    /** @property string            $vendor The namespace of the vendor/package */
 
     public $vendor;
 
-	/** @property directory			$directory The directory of the vendor/package */
+    /** @property directory         $directory The directory of the vendor/package */
 
     public $directory;
 
-	/** @property string			$extension The extension to be used when including files */
+    /** @property string            $extension The extension to be used when including files */
 
     public $extension = '.php';
 
@@ -143,7 +143,7 @@ class Autoloader {
             return $interface;
         }
 
-		return false;
+        return false;
 
     }
 
@@ -178,9 +178,9 @@ class Autoloader {
 
         $interfaces = [];
 
-		if ( ! $values ) {
-			$array = array_values( $array );
-		}
+        if ( ! $values ) {
+            $array = array_values( $array );
+        }
 
         for ( $i = 0; $i < count( $array ); ++$i ) {
 
