@@ -46,12 +46,21 @@ class Autoloader {
 
     public $extension = '.php';
 
-    public function load( $vendor, $directory ) {
+    public function load( $vendor, $directory, $classes = [] )
+	{
+
+        $this->init();
 
         $this->setVendor( $vendor );
         $this->setBase ( $directory );
 
-        $this->init();
+		if ( ! empty( $classes ) ) {
+			$classes = $this->autoloadArray( $classes );
+		}
+
+		if ( empty( $classes ) ) $classes = true;
+
+		return $classes;
 
     }
 
@@ -65,7 +74,8 @@ class Autoloader {
 
     }
 
-    public function init() {
+    public function init()
+	{
 
         if ( ! $this->init ) {
 
@@ -133,7 +143,8 @@ class Autoloader {
 
     }
 
-    public function autoload( $interface ) {
+    public function autoload( $interface )
+	{
 
         $file = $this->locate( $interface );
         if ( $file ) {
