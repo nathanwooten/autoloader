@@ -49,16 +49,17 @@ class Autoloader {
     public function load( $vendor, $directory, $classes = [] )
 	{
 
-        $this->init();
+			$this->init();
 
         $this->setVendor( $vendor );
         $this->setBase ( $directory );
 
-		if ( ! empty( $classes ) ) {
-			$classes = $this->autoloadArray( $classes );
-		}
+			// go ahead and require these ( sure to use ) classes
+			if ( ! empty( $classes ) ) {
+				$classes = $this->autoloadArray( $classes );
+			}
 
-		if ( empty( $classes ) ) $classes = true;
+		if ( empty( $classes ) || ! in_array( false, $classes ) ) $classes = true;
 
 		return $classes;
 
