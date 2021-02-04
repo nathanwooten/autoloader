@@ -1,5 +1,5 @@
 # The profordable.com Autoloader
-A very simple PSR-4 autoloader. Loads any PSR-4 compliant package with just a vendor name and directory.
+A very simple PSR-4 autoloader. Loads any PSR-4 compliant package ( recursive ) with just a vendor name and directory.
 
 ---
 With this package you can autoload and require-manually ( optional ) the files of other packages, quickly and easily.
