@@ -5,7 +5,7 @@ With this package you can autoload and require-manually ( optional ) the files o
 
 This package is for the times when Composer just isn't an option. Once in a blue moon there are conflicts, phpDocumentor warns us about this, and some packages flat out don't offer the Composer option. Composer and Fedora and this package actually share some ( not a lot ) commonality.
 
-You can register packages to have files included at instantiation or have them inlcuded manually in case where that might be useful ( such files that you know will be used ).
+You can register packages to have files included at instantiation or have them inlcuded manually in case where that might be useful ( such as files that you know will be used ).
 
 ## installation
 
