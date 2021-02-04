@@ -46,9 +46,32 @@ class Autoloader {
 
     public $extension = '.php';
 
-    public function __construct( $vendor, $directory, ...$args ) {
+    public function __construct( $vendor = null, $directory = null, ...$args ) {
 
-	    $this->load( $vendor, $directory, ...$args );
+        if ( isset( $vendor ) && isset( $directory ) ) {
+
+            $this->load( $vendor, $directory, ...$args );
+        }
+
+    }
+
+    public function load( $vendor, $directory, $classes = [], $prepend = false )
+    {
+
+        $this->init( null, $prepend );
+
+        $this->setVendor( $vendor );
+        $this->setBase ( $directory );
+
+        // go ahead and require these ( sure to use ) classes
+        if ( ! empty( $classes ) ) {
+            $classes = $this->autoloadArray( $classes );
+        }
+
+        // pass?
+        if ( empty( $classes ) || ! in_array( false, $classes ) ) $classes = true;
+
+        return $classes;
 
     }
 
