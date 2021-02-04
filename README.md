@@ -81,17 +81,21 @@ And here is the array for your convience:
 ```php
 <?php
 
-$dependency = [
+if ( ! defined( 'DS', DIRECTORY_SEPARATOR ) ) define( 'DS', DIRECTORY_SEPARATOR );
+
+$depDirectory = USERDIR . 'lib' . DS . 'vendor' . DS;
+
+$dep = [
 //nikic/fast-route
-    'FastRoute' => USERDIR . 'lib/vendor/FastRoute'
+    'FastRoute' => $depDirectory . 'FastRoute'
 //psr/container
-    'Psr\Container' => <directory> . 'src'
+    'Psr\Container' => $depDirectory . 'src'
 //psr/http-factory
-    'Psr\Http\Message' => <directory> . 'src'
+    'Psr\Http\Message' => $depDirectory . 'src'
 //psr/http-message
-    'Psr\Http\Message' => 'lib/vendor/PsrHttpMessage/src'
+    'Psr\Http\Message' => $depDirectory . 'src'
 //psr/http-server-handler
-    'Psr\Http\Server' => 'lib/vendor/PsrHttpServerHandler/src'
+    'Psr\Http\Server' => src'
 //psr/http-server-middleware
     'Psr\Http\Server' => 'lib/vendor/PsrHttpServerMiddleware/src'
 //psr/log
