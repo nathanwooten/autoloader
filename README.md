@@ -1,5 +1,7 @@
-# autoloader
+# The profordable.com Autoloader
 A PSR compliant autoloader for PHP.
+
+---
 
 With this package you can autoload and require-manually ( optional ) the files of other packages, quickly and easily.
 
@@ -7,7 +9,9 @@ This package is for the times when Composer just isn't an option. Once in a blue
 
 You can register packages to have files included at instantiation or have them inlcuded manually in case where that might be useful ( such as files that you know will be used ).
 
-## installation
+---
+
+## Installation
 
 Installation is simply including the version safe index.php file.
 ```php
@@ -20,7 +24,9 @@ $al = new Pf\Autoloader\Autoloader;
 ...
 ```
 
-## usage
+---
+
+## Usage
 
 As my usage example, I am autoloading Slim Framework, which actually does use Composer, but if you wanted to load it without Composer, you might do it this way.
 
@@ -56,6 +62,8 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 $app->run();
 ```
 
+## Extra
+
 It appears that Slim Framework has these dependencies:
 
 From the composer.json file
@@ -75,6 +83,24 @@ From the composer.json file
     },
 }
 ```
+
+Here are the links to the repositories on GitHub:
+
+ - [nikic/fast-route](https://github.com/nikic/FastRoute)
+ - [psr/container](https://github.com/php-fig/container)
+ - [psr/http-factory](https://github.com/php-fig/http-factory)
+ - [psr/http-message](https://github.com/php-fig/http-message)
+ - [psr/http-server-handler](https://github.com/php-fig/http-server-handler)
+ - [psr/http-server-middleware](https://github.com/php-fig/http-server-middleware)
+ - [psr/log](https://github.com/php-fig/log)
+ 
+Here are the links to the repositories on The Packagist:
+
+
+
+
+
+
 
 And here is the array for your convience:
 
