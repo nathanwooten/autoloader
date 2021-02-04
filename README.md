@@ -1,7 +1,7 @@
 # autoloader
 A PSR compliant autoloader for PHP.
 
-With this package you can autoload and require ( optional ) the files of other packages, quickly and easily.
+With this package you can autoload and require-manually ( optional ) the files of other packages, quickly and easily.
 
 This package is for the times when Composer just isn't an option. Once in a blue moon there are conflicts, phpDocumentor warns us about this, and some packages flat out don't offer the Composer option. Composer and Fedora and this package actually share some ( not a lot ) commonality.
 
