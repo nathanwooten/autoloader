@@ -96,11 +96,13 @@ Here are the links to the repositories on GitHub:
  
 Here are the links to the repositories on The Packagist:
 
-
-
-
-
-
+ - [nikic/fast-route](https://packagist.org/packages/nikic/fast-route)
+ - [psr/container](https://packagist.org/packages/psr/container)
+ - [psr/http-factory](https://packagist.org/packages/psr/http-factory)
+ - [psr/http-message](https://packagist.org/packages/psr/http-message)
+ - [psr/http-server-handler](https://packagist.org/packages/psr/http-server-handler)
+ - [psr/http-server-middleware](https://packagist.org/packages/psr/http-server-middleware)
+ - [psr/log](https://packagist.org/packages/psr/log)
 
 And here is the array for your convience:
 
