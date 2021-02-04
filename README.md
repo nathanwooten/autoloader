@@ -32,8 +32,7 @@ As my usage example, I am autoloading my website.
 use Pf\Autoloader\Autoloader as Autoloader;
 
 if ( ! defined( 'DS', DIRECTORY_SEPARATOR ) ) define( 'DS', DIRECTORY_SEPARATOR );
-//require_once '/path/to/Autoloader/src/index.php';
-require_once $dir . 'Autoloader' . DS . 'src' . DS . 'index.php';
+require_once USERDIR . DS 'lib' . DS . 'vendor' . DS . 'Autoloader' . DS . 'src' . DS . 'index.php';
 
 new Autoloader( 'Website', USERDIR . DS. 'lib' . DS . 'src' );
 
