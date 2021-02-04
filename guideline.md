@@ -8,7 +8,7 @@
     - src
     - vendor
 
-    Each vendor will also contain the same directory layout
+ Each vendor will also contain the same directory layout
  
  - root
      -src
