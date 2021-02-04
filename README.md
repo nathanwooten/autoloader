@@ -61,7 +61,7 @@ It appears that Slim Framework has these dependencies:
 From the composer.json file
 
 ```json
-...
+{
     "require": {
         "php": "^7.2 || ^8.0",
         "ext-json": "*",
@@ -73,28 +73,54 @@ From the composer.json file
         "psr/http-server-middleware": "^1.0",
         "psr/log": "^1.1"
     },
-    "require-dev": {
-        "ext-simplexml": "*",
-        "adriansuter/php-autoload-override": "^1.2",
-        "guzzlehttp/psr7": "^1.7",
-        "http-interop/http-factory-guzzle": "^1.0",
-        "laminas/laminas-diactoros": "^2.4",
-        "nyholm/psr7": "^1.3",
-        "nyholm/psr7-server": "^1.0.1",
-        "phpspec/prophecy": "^1.12",
-        "phpstan/phpstan": "^0.12.64",
-        "phpunit/phpunit": "^8.5.13 || ^9.3.8",
-        "slim/http": "^1.2",
-        "slim/psr7": "^1.3",
-        "squizlabs/php_codesniffer": "^3.5",
-        "weirdan/prophecy-shim": "^1.0 || ^2.0.2"
-    },
+}
 ```
+
 And here is the array for your convience:
 
+```php
+<?php
+
+$dependency = [
+//nikic/fast-route
+    'FastRoute' => USERDIR . 'lib/vendor/FastRoute'
+//psr/container
+    'Psr\Container' => <directory> . 'src'
+//psr/http-factory
+    'Psr\Http\Message' => <directory> . 'src'
+//psr/http-message
+    'Psr\Http\Message' => 'lib/vendor/PsrHttpMessage/src'
+//psr/http-server-handler
+    'Psr\Http\Server' => 'lib/vendor/PsrHttpServerHandler/src'
+//psr/http-server-middleware
+    'Psr\Http\Server' => 'lib/vendor/PsrHttpServerMiddleware/src'
+//psr/log
+    'Psr\Log' => '/path/to/Psr/Log/Log'
+];
 
 And here is how I load:
 
+```php
+foreach ($dependency as $vendor => $directory ) {
 
+    $al = new Autoloader;
+    $al->setVendor( $vendor );
+    $al->setBase( $directory );
+}
 
+// Use Slim Framework
 
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Factory\AppFactory;
+
+$app = AppFactory::create();
+
+$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
+    $name = $args['name'];
+    $response->getBody()->write("Hello, $name");
+    return $response;
+});
+
+$app->run();
+```
