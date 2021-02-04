@@ -11,8 +11,8 @@
  Each vendor will also contain the same directory layout
  
  - root
-     -src
-     -vendor
+    - src
+    - vendor
 
 It would be nice if the community and Composer stored packages this way, still relying on Composer for installation and dependencies where needed.
 
