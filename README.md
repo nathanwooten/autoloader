@@ -1,13 +1,13 @@
 # The profordable.com Autoloader
-A PSR compliant autoloader for PHP, companion to Composer.
+A very simple PSR-4 autoloader. Loads any PSR-4 compliant package with just a vendor name and directory.
 
 ---
-
 With this package you can autoload and require-manually ( optional ) the files of other packages, quickly and easily.
 
-This package is for the times when Composer just isn't an option. Once in a blue moon there are conflicts, phpDocumentor warns us about this, and some packages flat out don't offer the Composer option. Composer and Fedora and this package actually share some ( not a lot ) commonality.
+Any package that complies with the PSR-4 standard, can be loaded by providing a vendor name ( the vendor/package part of the namespace ) and directory ( usually the src directory one level deep within the package root ).
 
-You can register packages to have files included at instantiation or have them inlcuded manually in case where that might be useful ( such as files that you know will be used ).
+
+If you are not using Composer, or are using Composer and also using packages that don't, then you can use this autoloader to easily load your PSR-4 compliant namespacing/foldering. Basically, in a PSR-4 namespaced package, the path to a file is str_replace( '<namespace>', '<directory>', '<interface>' ). The namespace and directory are provided up front. The interface is provided when a class is requested during instantiation.
 
 ---
 
@@ -36,25 +36,21 @@ As my usage example, I am autoloading my website.
 use Pf\Autoloader\Autoloader as Autoloader;
 
 if ( ! defined( 'DS', DIRECTORY_SEPARATOR ) ) define( 'DS', DIRECTORY_SEPARATOR );
-
 //require_once '/path/to/Autoloader/src/index.php';
 require_once $dir . 'Autoloader' . DS . 'src' . DS . 'index.php';
 
 new Autoloader( 'Website', USERDIR . DS. 'lib' . DS . 'src' );
 
 // now my controller might do something like this:
-
 $urlPath = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
 if ( '/' === $urlPath ) {
     $page = 'Home';
     $params = [];
 } else {
-
     $page = 'Page'
     $params = [ $urlPath ];
 }
 $pageController = 'Website\Page\\' . $page;
-
 $controller = new $pageController( ...$params );
 
 $controller->run();
