@@ -14,8 +14,8 @@
     - src
     - vendor
 
-It would be nice if the community and Composer stored packages this way, still relying on Composer for installation and dependencies where needed.
+It would be nice if the community and Composer stored packages this way, still relying on Composer for installation and dependencies.
 
-To avoid conflicts, the version of the package could ( maybe should ) be store in the namespace.
+To avoid conflicts, the version of the package could ( maybe should ) be stored in the namespace.
 
 For an example of how I might store a package that has dependencies, please see the other Profordable packages.
