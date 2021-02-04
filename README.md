@@ -52,6 +52,7 @@ if ( '/' === $urlPath ) {
     $page = 'Page'
     $params = [ $urlPath ];
 }
+    // website/src/page folder
 $pageController = 'Website\Page\\' . $page;
 $controller = new $pageController( ...$params );
 
