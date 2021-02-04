@@ -7,7 +7,7 @@ This package is for the times when Composer just isn't an option. Once in a blue
 
 You can register packages to have files included at instantiation or have them inlcuded manually in case where that might be useful ( such files that you know will be used ).
 
-# installation
+## installation
 
 Installation is simply including the version safe index.php file.
 ```php
@@ -20,7 +20,7 @@ require '/path/to/Autoloader/src/index.php';
 ...
 ```
 
-# usage
+## usage
 
 ```php
 <?php
