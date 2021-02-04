@@ -8,14 +8,16 @@
     - src
     - vendor
 
- Each vendor will also contain the same directory layout
+3. Each vendor will also contain the same directory layout as the parent package:
  
  - root
     - src
     - vendor
 
-It would be nice if the community and Composer stored packages this way, still relying on Composer for installation and dependencies.
+It would be nice if packages were bundled this way, as well as applications that are ready out of the box, such as Joomla.
 
 To avoid conflicts, the version of the package could ( maybe should ) be stored in the namespace.
 
-For an example of how I might store a package that has dependencies, please see the other Profordable packages.
+[Contact Us](mailto:admin@cloudhadoop.com)
+
+For an example of how I might store a package that has dependencies, please see the other [profordable.com packages](https://github.com/nathanwooten/).
