@@ -22,6 +22,8 @@ require '/path/to/Autoloader/src/index.php';
 
 ## usage
 
+As my usage example, I am autoloading Slim Framework, which actually does use Composer, but if you wanted to load it without Composer, you might do it this way.
+
 ```php
 <?php
 
