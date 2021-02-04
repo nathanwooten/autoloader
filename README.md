@@ -6,10 +6,12 @@ With this package you can autoload and require-manually ( optional ) the files o
 
 Any package that complies with the PSR-4 standard, can be loaded by providing a vendor name ( the vendor/package part of the namespace ) and directory ( usually the src directory one level deep within the package root ).
 
+You do not have to use any more information than a vendor name and a single directory for the recursion. No providing directories necessary. No heavy directory searches.
 
-If you are not using Composer, or are using Composer and also using packages that don't, then you can use this autoloader to easily load your PSR-4 compliant namespacing/foldering. Basically, in a PSR-4 namespaced package, the path to a file is str_replace( '<namespace>', '<directory>', '<interface>' ). The namespace and directory are provided up front. The interface is provided when a class is requested during instantiation.
+``php
+<?php
 
----
+require USERDIR . DS . 'lib' . DS . 'vendor' . DS . 'ProfordableAutoloader' . DS . 'index.php';
 
 ## Installation
 
