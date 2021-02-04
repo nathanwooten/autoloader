@@ -1,5 +1,5 @@
 # The profordable.com Autoloader
-A PSR compliant autoloader for PHP.
+A PSR compliant autoloader for PHP
 
 ---
 
@@ -61,6 +61,8 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 
 $app->run();
 ```
+
+---
 
 ## Extra
 
@@ -158,4 +160,20 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 });
 
 $app->run();
+```
+
+Then again if you want just use Composer for Slim, then you can use this on the command line, and leave the direct autoloading
+to packages that you can't find on [packagist.org](https://packagist.org), such as the classes and domains necessary to build a for a website.
+
+```
+composer require slim/slim "^3.0"
+```
+
+For example, I might load my website like so:
+
+```php
+<?php
+
+new Autoloader( 'Website', USERDIR . DS . 'lib' . DS . 'src' );
+
 ```
