@@ -33,9 +33,11 @@ require_once '/path/to/Autoloader/src/index.php';
 
 // Load Slim Framework
 
-$al = Autoloader::factory( [ 'setVendor' => [ 'Slim' ], 'setBase' => [ '/path/to/Slim/src' ] ] );
+$al = Autoloader::factory( [ 'setVendor' => [ 'Slim' ], 'setBase' => [ '/path/to/Slim/Slim' ] ] );
 
-$a1 = Autoloader::factory( [ 'setVendor' => [ 'Psr' ], 'setBase' => [ '/path/to/Psr/src' ] ] );
+$a1 = Autoloader::factory( [ 'setVendor' => [ 'Psr\Log' ], 'setBase' => [ '/path/to/Psr/Log/Log' ] ] );
+$a1 = Autoloader::factory( [ 'setVendor' => [ 'Psr\Http\Message' ], 'setBase' => [ '/path/to/Psr/Http/Message/src' ] ] );
+...dependencies etc
 
 // Use Slim Framework
 
@@ -53,3 +55,4 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 
 $app->run();
 ```
+
