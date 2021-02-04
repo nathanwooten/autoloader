@@ -46,22 +46,27 @@ class Autoloader {
 
     public $extension = '.php';
 
-    public function load( $vendor, $directory, $classes = [] )
+    public function __construct( $vendor, $directory, ...$args ) {
+
+	    $this->load( $vendor, $directory, ...$args );
+
+    }
+
+    public function load( $vendor, $directory, $classes = [], $prepend = false )
 	{
 
-			$this->init();
+        $this->init( null, $prepend );
 
         $this->setVendor( $vendor );
         $this->setBase ( $directory );
 
-			// go ahead and require these ( sure to use ) classes
-			if ( ! empty( $classes ) ) {
-				$classes = $this->autoloadArray( $classes );
-			}
+	// go ahead and require these ( sure to use ) classes
+	if ( ! empty( $classes ) ) {
+		$classes = $this->autoloadArray( $classes );
+	}
+	if ( empty( $classes ) || ! in_array( false, $classes ) ) $classes = true;
 
-		if ( empty( $classes ) || ! in_array( false, $classes ) ) $classes = true;
-
-		return $classes;
+	return $classes;
 
     }
 
@@ -242,6 +247,12 @@ class Autoloader {
             return $autoloader;
         }
 
+    }
+
+    public function hasInstance( $vendor ) {
+    
+        return array_key_exists( $vendor, static::$instance );
+	    
     }
 
 }
