@@ -8,7 +8,7 @@ Any package that complies with the PSR-4 standard, can be loaded by providing a 
 
 You do not have to use any more information than a vendor name and a single directory for the recursion. No providing directories necessary. No heavy directory searches.
 
-``php
+```php
 <?php
 
 require USERDIR . DS . 'lib' . DS . 'vendor' . DS . 'ProfordableAutoloader' . DS . 'index.php';
