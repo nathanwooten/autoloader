@@ -5,7 +5,9 @@ With this package you can autoload/load the files of other packages, quickly and
 
 Usage:
 
-```
+```php
+<?php
+
 use Pf\Autoloader\Autoloader as Autoloader;
 
 require_once '/path/to/Autoloader/src/index.php';
