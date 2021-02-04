@@ -56,3 +56,17 @@ $app->get('/hello/{name}', function (Request $request, Response $response, array
 $app->run();
 ```
 
+It appears that Slim Framework has these dependencies:
+
+
+
+
+
+And here is the array for your convience:
+
+
+And here is how I load:
+
+
+
+
