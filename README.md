@@ -28,19 +28,6 @@ $al = new Pf\Autoloader\Autoloader;
 
 ## Usage
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 As my usage example, I am autoloading my website.
 
 ```php
@@ -55,18 +42,21 @@ require_once $dir . 'Autoloader' . DS . 'src' . DS . 'index.php';
 
 new Autoloader( 'Website', USERDIR . DS. 'lib' . DS . 'src' );
 
-now my controller might do something like this:
+// now my controller might do something like this:
 
 $urlPath = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
-
 if ( '/' === $urlPath ) {
-
-    $controller = new Website\Page\Home;
-
+    $page = 'Home';
+    $params = [];
 } else {
 
-    $controller = new Website\Page\Page( $urlPath );
-
+    $page = 'Page'
+    $params = [ $urlPath ];
 }
+$pageController = 'Website\Page\\' . $page;
+
+$controller = new $pageController( ...$params );
+
+$controller->run();
 
 ```
