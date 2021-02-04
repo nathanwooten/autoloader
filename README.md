@@ -1,9 +1,26 @@
 # autoloader
 A PSR compliant autoloader for PHP.
 
-With this package you can autoload/load the files of other packages, quickly and easily.
+With this package you can autoload and require ( optional ) the files of other packages, quickly and easily.
 
-Usage:
+This package is for the times when Composer just isn't an option. Once in a blue moon there are conflicts, phpDocumentor warns us about this, and some packages flat out don't offer the Composer option. Composer and Fedora and this package actually share some ( not a lot ) commonality.
+
+You can register packages to have files included at instantiation or have them inlcuded manually in case where that might be useful ( such files that you know will be used ).
+
+# installation
+
+Installation is simply including the version safe index.php file.
+```php
+<?php
+
+require '/path/to/Autoloader/src/index.php';
+
+//now use
+
+...
+```
+
+# usage
 
 ```php
 <?php
