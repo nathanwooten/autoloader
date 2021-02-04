@@ -35,7 +35,7 @@ require_once '/path/to/Autoloader/src/index.php';
 
 $al = Autoloader::factory( [ 'setVendor' => [ 'Slim' ], 'setBase' => [ '/path/to/Slim/src' ] ] );
 
-$a1 = Autoloader::factory( [ 'setVendor' => [ 'PSR' ], 'setBase' => [ '/path/to/PSR/src' ] ] );
+$a1 = Autoloader::factory( [ 'setVendor' => [ 'Psr' ], 'setBase' => [ '/path/to/Psr/src' ] ] );
 
 // Use Slim Framework
 
