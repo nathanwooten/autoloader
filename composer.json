@@ -1,4 +1,4 @@
 {
     "name": "nathanwooten/autoloader",
-    "description": "A companion to Composer, to use simply load a package's vendor and directory and instantiate your interface"
+    "description": "The simplest PSR-4 autoloader, period."
 }
