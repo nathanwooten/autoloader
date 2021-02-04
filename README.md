@@ -85,9 +85,12 @@ if ( ! defined( 'DS', DIRECTORY_SEPARATOR ) ) define( 'DS', DIRECTORY_SEPARATOR 
 
 $depDirectory = USERDIR . 'lib' . DS . 'vendor' . DS;
 
+
+// folders are given as downloaded from github
+
 $dep = [
 //nikic/fast-route
-    'FastRoute' => $depDirectory . 'FastRoute'
+    'FastRoute' => $depDirectory . 'FastRoute-master\FastRoute-master\src'
 //psr/container
     'Psr\Container' => $depDirectory . 'src'
 //psr/http-factory
@@ -95,17 +98,17 @@ $dep = [
 //psr/http-message
     'Psr\Http\Message' => $depDirectory . 'src'
 //psr/http-server-handler
-    'Psr\Http\Server' => src'
+    'Psr\Http\Server' => $depDirectory . 'src'
 //psr/http-server-middleware
-    'Psr\Http\Server' => 'lib/vendor/PsrHttpServerMiddleware/src'
+    'Psr\Http\Server' => $depDirectory . ''src'
 //psr/log
-    'Psr\Log' => '/path/to/Psr/Log/Log'
+    'Psr\Log' => $depDirectory . 'Log'
 ];
 
 And here is how I load:
 
 ```php
-foreach ($dependency as $vendor => $directory ) {
+foreach ($dep as $vendor => $directory ) {
 
     $al = new Autoloader;
     $al->setVendor( $vendor );
