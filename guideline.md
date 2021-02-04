@@ -1,4 +1,4 @@
-# Autoloader Guideline
+# Package Guideline
 
 1. This package ( Profordable packages ) is responsible for providing it's own dependencies ( there are none in this case, but some Profordable packages do have some ).
 
