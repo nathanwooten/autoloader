@@ -15,7 +15,7 @@ Installation is simply including the version safe index.php file.
 
 require '/path/to/Autoloader/src/index.php';
 
-//now use
+$al = new Pf\Autoloader\Autoloader;
 
 ...
 ```
