@@ -75,24 +75,6 @@ class Autoloader {
 
     }
 
-    public function load( $vendor, $directory, $classes = [], $prepend = false )
-	{
-
-        $this->init( null, $prepend );
-
-        $this->setVendor( $vendor );
-        $this->setBase ( $directory );
-
-	// go ahead and require these ( sure to use ) classes
-	if ( ! empty( $classes ) ) {
-		$classes = $this->autoloadArray( $classes );
-	}
-	if ( empty( $classes ) || ! in_array( false, $classes ) ) $classes = true;
-
-	return $classes;
-
-    }
-
     public static function factory()
     {
 
@@ -112,7 +94,8 @@ class Autoloader {
             if ( !empty( $args ) ) {
 
                 $this->configure( $args[0] );
-            }
+	    }
+            $prepend = isset( $args[1] ) ? $args[1] : false;
 
             spl_autoload_register( [ $this, 'autoload' ] );
 
