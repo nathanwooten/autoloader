@@ -60,23 +60,42 @@ class Autoloader {
 
     }
 
-    public function load( $vendor, $directory, $classes = [], $prepend = false )
+    public function load( string $vendor = null, string $base = null, $classes = [], $register = true )
     {
 
-        $this->init( null, $prepend );
-
-        $this->setVendor( $vendor );
-        $this->setBase ( $directory );
-
-        // go ahead and require these ( sure to use ) classes
-        if ( ! empty( $classes ) ) {
-            $classes = $this->autoloadArray( $classes );
+        if ( $register ) {
+            $registered = $this->register();
+            if ( ! $registered ) {
+                return false;
+            }
         }
 
-        // pass?
-        if ( empty( $classes ) || ! in_array( false, $classes ) ) $classes = true;
+        if ( isset( $vendor ) ) {
+            $this->setVendor( $vendor );
+        }
 
-        return $classes;
+        if ( isset( $base ) ) {
+            $this->setBase( $base );
+        }
+
+        if ( ! empty( $classes ) ) {
+            foreach ( $classes as $class ) {
+                $this->autoload( $class );
+            }
+        }
+
+    }
+
+    /**
+     * Registers the autoloader in the autoloader queue
+     *
+     */
+
+    public function register() {
+
+        if ( ! $this->registered ) {
+            $this->registered = spl_autoload_register( [ $this, 'autoload'], false, $this->prepend );
+        }
 
     }
 
