@@ -46,15 +46,6 @@ class Autoloader {
 
     public $extension = '.php';
 
-    public function __construct( $vendor = null, $directory = null, ...$args ) {
-
-        if ( isset( $vendor ) && isset( $directory ) ) {
-
-            $this->load( $vendor, $directory, ...$args );
-        }
-
-    }
-
     public function load( $vendor, $directory, $classes = [], $prepend = false )
     {
 
@@ -78,7 +69,7 @@ class Autoloader {
     public static function factory()
     {
 
-        $instance = new self;
+        $instance = new static;
         $instance->init( ...func_get_args() );
 
         return $instance;
