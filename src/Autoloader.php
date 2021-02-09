@@ -1,19 +1,22 @@
 <?php
 
+/**
+ * @link      http://github.com/nathanwooten/autoloader
+ * @copyright Copyright (c) 2021 Nathan Wooten (http://www.profordable.com)
+ * @license   MIT License
+ */
+
 namespace Pf\Autoloader;
 
-use function array_key_exists;
-use function array_values;
+use function str_replace;
+
 use function basename;
 use function class_exists;
-use function count;
 use function file_exists;
-use function is_callable;
 use function ltrim;
 use function rtrim;
 use function spl_autoload_register;
-use function str_replace;
-
+0
     global $classLoaded;
     $classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
 
@@ -26,25 +29,51 @@ if ( class_exists( $classLoaded, false ) ) {
 class Autoloader {
 
 
-    /** @property boolean            $init Flag to determine whether or not the autoloader has been registered with spl_autoload_register */
-
-    protected $init = false;
-
-    /** @property string            $exists The function used to check if a file exists */
-
-    protected $exists = 'file_exists';
-
-    /** @property string            $vendor The namespace of the vendor/package */
+    /**
+     * The namespace of the vendor/package
+     *
+     * @var string $vendor
+     */
 
     public $vendor;
 
-    /** @property directory         $directory The directory of the vendor/package */
+    /**
+     * The base directory of the vendor/package
+     *
+     * @var string $base
+     */
 
-    public $directory;
+    public $dir;
 
-    /** @property string            $extension The extension to be used when including files */
+    /**
+     * The extension to be used when including files
+     *
+     * @var string $ext
+     */
 
-    public $extension = '.php';
+    public $ext = 'php';
+
+    /**
+     * Prepend the autoloader ( the vendor ) in PHP's autoloader queue
+     *
+     * @var string $prepend
+     */
+
+    public $prepend = false;
+
+    /**
+     * Indicates that the autoloader has been registered or not
+     *
+     * @var boolean $registered
+     */
+
+    public $registered = false;
+
+    /**
+     * The factory method, a callable you can
+     * use to instantiate the autoloader
+     *
+     */
 
     public static function factory()
     {
@@ -60,7 +89,7 @@ class Autoloader {
 
     }
 
-    public function load( string $vendor = null, string $base = null, $classes = [], $register = true )
+    public function load( string $vendor = null, string $dir = null, $classes = [], $register = true )
     {
 
         if ( $register ) {
@@ -74,14 +103,79 @@ class Autoloader {
             $this->setVendor( $vendor );
         }
 
-        if ( isset( $base ) ) {
-            $this->setBase( $base );
+        if ( isset( $dir ) ) {
+            $this->setBase( $dir );
         }
 
         if ( ! empty( $classes ) ) {
             foreach ( $classes as $class ) {
                 $this->autoload( $class );
             }
+        }
+
+    }
+
+    public function autoload( string $interface )
+    {
+
+        $file = $this->locate( $interface );
+        if ( $file ) {
+            require_once $file;
+
+            return $interface;
+        }
+
+        return false;
+
+    }
+
+    /**
+     * This is where the magic happens,
+     *
+     * Example
+     *
+     *    Interface:            Pf\Application\Router\Router
+     *
+     *    Preset:
+     *
+     *        Vendor:            Pf\Application
+     *
+     *            replace above with below
+     *
+     *        Directory:        \path\to\Application\src
+     *
+     *        ---
+     *
+     *        Extension:        .php
+     *
+     *    File Pathname:        \path\to\Application\src\Router\Router.php
+
+     */
+
+    public function locate( string $interface )
+    {
+
+        $interface = $this->normalize( $interface, false );
+
+        $vendor = $this->normalize( $this->getVendor() );
+        $directory = $this->normalize( $this->getDir() );
+
+        $extension = $this->getExt();
+
+        $file = str_replace(
+
+            // replace vendor with directory
+            $vendor,
+            $directory,
+
+            // in interrace
+            $interface
+
+        ) . $extension;
+
+        if ( file_exists( $file ) ) {
+
+            return $file;
         }
 
     }
@@ -99,7 +193,14 @@ class Autoloader {
 
     }
 
-    public function setVendor( $vendor )
+    /**
+     * Set the vendor portion of the namespace
+     *
+     * @param string $vendor 
+     *
+     */
+
+    public function setVendor( string $vendor )
     {
 
         $this->vendor = $vendor;
@@ -113,124 +214,64 @@ class Autoloader {
 
     }
 
-    public function setBase( $directory )
+    public function setDir( $dir )
     {
 
-        $this->directory = $directory;
+        $this->dir = $dir;
 
     }
 
-    public function getBase()
+    public function getDir()
     {
 
-        return $this->directory;
+        return $this->dir;
 
     }
 
-    public function autoload( $interface )
+    public function setExt( $ext )
     {
 
-        $file = $this->locate( $interface );
-        if ( $file ) {
+        $this->ext = $ext;
 
-            require_once $file;
+    }
 
-            return $interface;
+    public function getExt()
+    {
+
+        $ext = $this->ext;
+        $ext = '.' . ltrim( $ext, '.' );
+
+        return $ext;
+
+    }
+
+    public function setPreprend( $prepend ) {
+
+        if ( $this->registered ) {
+            return;
         }
 
-        return false;
+        $this->prepend = (bool) $prepend;
 
     }
 
-    public function locate( $interface )
-    {
+    public function getPrepend() {
 
-        $vendorName = $this->normalize( $this->getVendor() );
-        $directory = $this->normalize( $this->getBase() );
-        $interface = $this->normalize( $interface, false );
-
-        $extension = $this->getExtension();
-
-        $file = str_replace(
-
-            $vendorName,
-            $directory,
-
-            $interface
-
-        ) . $extension;
-
-            $exists = $this->exists;
-        if ( $exists( $file ) ) {
-
-            return $file;
-        }
-
-    }
-
-    public function autoloadArray( array $array, $values = true )
-    {
-
-        $interfaces = [];
-
-        if ( ! $values ) {
-            $array = array_values( $array );
-        }
-
-        for ( $i = 0; $i < count( $array ); ++$i ) {
-
-                $interface = $array[$i];
-
-            $status[$interface] = $this->autoload( $interface );
-        }
-
-        return $status;
-
-    }
-
-    public function setExtension( $extension )
-    {
-
-        $extension = '.' . ltrim( $extension, '.' );
-        $this->extension = $extension;
-
-    }
-
-    public function getExtension()
-    {
-
-        return $this->extension;
+        return $this->prepend;
 
     }
 
     public function normalize( $item, $append = true )
     {
 
-        $item = str_replace( ['\\', '/'], DIRECTORY_SEPARATOR, $item );
-        $item = rtrim( $item, DIRECTORY_SEPARATOR );
+        $item = str_replace( ['\\', '/'], DIRECTORY_SEPARATOR, rtrim( $item, DIRECTORY_SEPARATOR );
+
         if ( $append ) {
             $item .= DIRECTORY_SEPARATOR;
         }
 
         return $item;
 
-    }
-
-    public function getInstance( $vendor )
-    {
-
-        if ( array_key_exists( $vendor, static::$instance ) ) {
-
-            $autoloader = static::$instance[$vendor];
-            return $autoloader;
-        }
-
-    }
-
-    public function hasInstance( $vendor ) {
-    
-        return array_key_exists( $vendor, static::$instance );
-        
     }
 
 }
