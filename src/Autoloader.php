@@ -46,6 +46,20 @@ class Autoloader {
 
     public $extension = '.php';
 
+    public static function factory()
+    {
+
+        $instance = new static;
+
+        $params = func_get_args();
+        if ( ! empty( $params ) ) {
+            $instance->load( ...func_get_args() );
+        }
+
+        return $instance;
+
+    }
+
     public function load( $vendor, $directory, $classes = [], $prepend = false )
     {
 
@@ -63,58 +77,6 @@ class Autoloader {
         if ( empty( $classes ) || ! in_array( false, $classes ) ) $classes = true;
 
         return $classes;
-
-    }
-
-    public static function factory()
-    {
-
-        $instance = new static;
-        $instance->init( ...func_get_args() );
-
-        return $instance;
-
-    }
-
-    public function init()
-	{
-
-        if ( ! $this->init ) {
-
-                $args = func_get_args();
-            if ( !empty( $args ) ) {
-
-                $this->configure( $args[0] );
-	    }
-            $prepend = isset( $args[1] ) ? $args[1] : false;
-
-            spl_autoload_register( [ $this, 'autoload' ] );
-
-            $this->init = true;
-
-        }
-
-        return $this;
-
-    }
-
-    public function configure( array $config, $callable = true )
-    {
-
-        $result = [];
-
-        foreach ( $config as $methodName => $args ) {
-
-            $callback = [ $this, $methodName ];
-            if ( ! $callable && ! is_callable( $callback ) ) {
-
-                 return false;
-            }
-
-            $result[] = $callback( ...array_values( $args ) );
-        }
-
-        return $result;
 
     }
 
@@ -147,7 +109,7 @@ class Autoloader {
     }
 
     public function autoload( $interface )
-	{
+    {
 
         $file = $this->locate( $interface );
         if ( $file ) {
@@ -249,7 +211,7 @@ class Autoloader {
     public function hasInstance( $vendor ) {
     
         return array_key_exists( $vendor, static::$instance );
-	    
+        
     }
 
 }
