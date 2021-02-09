@@ -16,7 +16,7 @@ use function file_exists;
 use function ltrim;
 use function rtrim;
 use function spl_autoload_register;
-0
+
     global $classLoaded;
     $classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
 
