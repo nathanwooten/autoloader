@@ -67,7 +67,7 @@ class Autoloader {
      * @var boolean $registered
      */
 
-    public $registered = false;
+    protected $registered = false;
 
     /**
      * The factory method, a callable you can
@@ -90,8 +90,19 @@ class Autoloader {
 
     }
 
-    public function load( string $vendor = null, string $dir = null, $classes = [], $register = true )
+    /**
+     * This is the main loading function. You can provide,
+     * vendor
+     * Th
+    
+    
+    
+    public function load( $configure = [], $register = true )
     {
+
+        foreach ( $configure as $methodName => $params ) {
+            $this->$methodName( ...$params );
+        }
 
         if ( $register ) {
             $registered = $this->register();
@@ -100,15 +111,8 @@ class Autoloader {
             }
         }
 
-        if ( isset( $vendor ) ) {
-            $this->setVendor( $vendor );
-        }
-
-        if ( isset( $dir ) ) {
-            $this->setDir( $dir );
-        }
-
-        if ( ! empty( $classes ) ) {
+        if ( isset( $configure['classes'] ) ) {
+            $classes = $configure['classes'];
             foreach ( $classes as $class ) {
                 $this->autoload( $class );
             }
