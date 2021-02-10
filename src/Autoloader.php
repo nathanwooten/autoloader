@@ -158,8 +158,8 @@ class Autoloader {
 
         $interface = $this->normalize( $interface, false );
 
-        $vendor = $this->normalize( $this->getVendor() );
-        $directory = $this->normalize( $this->getDir() );
+        $vendor = $this->getVendor();
+        $directory = $this->getDir();
 
         $extension = $this->getExt();
 
