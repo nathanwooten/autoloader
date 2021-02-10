@@ -92,11 +92,13 @@ class Autoloader {
 
     /**
      * This is the main loading function. You can provide,
-     * vendor
-     * Th
-    
-    
-    
+     * a list of method names and parameters to configure
+     * the autoloader any way you like and optionally
+     * register the autoloader in the callables queue.
+     * If you want to go ahead and require files for
+     * certain interfaces, provide that here ( as a list ).
+     */
+
     public function load( $configure = [], $register = true )
     {
 
