@@ -106,17 +106,17 @@ class Autoloader {
             $this->$methodName( ...$params );
         }
 
-        if ( $register ) {
-            $registered = $this->register();
-            if ( ! $registered ) {
-                return false;
-            }
-        }
-
         if ( isset( $configure['classes'] ) ) {
             $classes = $configure['classes'];
             foreach ( $classes as $class ) {
                 $this->autoload( $class );
+            }
+        }
+
+        if ( $register ) {
+            $registered = $this->register();
+            if ( ! $registered ) {
+                return false;
             }
         }
 
