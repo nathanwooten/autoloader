@@ -71,7 +71,8 @@ class Autoloader {
 
     /**
      * The factory method, a callable you can
-     * use to instantiate the autoloader
+     * use to instantiate the autoloader, also
+     * calls load.
      *
      */
 
@@ -104,7 +105,7 @@ class Autoloader {
         }
 
         if ( isset( $dir ) ) {
-            $this->setBase( $dir );
+            $this->setDir( $dir );
         }
 
         if ( ! empty( $classes ) ) {
@@ -207,10 +208,16 @@ class Autoloader {
 
     }
 
-    public function getVendor()
+    public function getVendor( $normalize = true )
     {
 
-        return $this->vendor;
+        $vendor = $this->vendor;
+
+        if ( $normalize ) {
+            $vendor = $this->normalize( $vendor );            
+        }
+
+        return $vendor;
 
     }
 
@@ -221,10 +228,16 @@ class Autoloader {
 
     }
 
-    public function getDir()
+    public function getDir( $normalize = true )
     {
 
-        return $this->dir;
+        $dir = $this->dir;
+        
+        if ( $normalize ) {
+            $dir = $this->normalize( $dir );
+        }
+
+        return $dir;
 
     }
 
