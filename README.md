@@ -10,7 +10,7 @@ You do not have to use any more information than a vendor name and a single dire
 
 ## Installation
 
-As far as installation goes, you can use composer:
+As far as installation goes, you can use Composer:
 
 ### Composer
 
