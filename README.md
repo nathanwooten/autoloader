@@ -52,11 +52,11 @@ use Pf\Autoloader\Autoloader as Autoloader;
 
 require_once USERDIR . DS 'lib' . DS . 'vendor' . DS . 'Autoloader' . DS . 'src' . DS . 'index.php';
 
-$al = new Autoloader
+$al = new Autoloader;
+$al->register();
 $al->setVendor( 'Website' );
 $al->setDir( USERDIR . '\lib\src );
 
 $ctrl = new Website\Controller\ControllerResolver( $_SERVER['REQUEST_URI'] );
 $ctrl->run();
-
 ```
