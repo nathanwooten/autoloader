@@ -22,8 +22,12 @@ composer require nathanwooten/autoloader
 
 In your code:
 
-```
+```php
+<?php
+
 require '\composer\vendor\autoload.php';
+
+?>
 ```
 
 ### Manual Installation
@@ -43,7 +47,7 @@ $al = new Pf\Autoloader\Autoloader;
 
 ## Usage
 
-As my usage example, I am autoloading my website.
+For my usage example, I am autoloading my website.
 
 ```php
 <?php
@@ -60,3 +64,37 @@ $al->setDir( USERDIR . '\lib\src );
 $ctrl = new Website\Controller\ControllerResolver( $_SERVER['REQUEST_URI'] );
 $ctrl->run();
 ```
+
+If I want to modify peripherals I can do it like so:
+
+```php
+<?php
+
+$al = new Autoloader;
+$al->setExt( '.class.php' );
+$a1->setPrepend( true );
+```
+
+For configuring and loading you could try:
+```php
+<?php
+
+$al = new Autoloader;
+$al->load(
+    'setVendor' => [ 'Website' ],
+    'setDir' => [ USERDIR . '\lib\src' ]
+    'setPrepend => true
+ );
+```
+
+Also you can actually register the autoloader with the load method as well.
+
+```php
+<?php
+
+$al = new Autoloader;
+$al->load(
+    'setVendor' => [ 'Website' ],
+    'setDir' => [ USERDIR . '\lib\src' ],
+    'register' => []
+);
