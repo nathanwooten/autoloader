@@ -1,4 +1,16 @@
 {
     "name": "nathanwooten/autoloader",
-    "description": "The simplest PSR-4 autoloader, period."
+    "description": "The simplest PSR-4 autoloader, period.",
+    "license": "MIT",
+
+    "require": {
+        "php": ">=7.1",
+    }
+
+    "authors": [
+        {
+            "name": "Nathan Wooten",
+            "homepage": "https://profordable.com/"
+        }
+    ]
 }
