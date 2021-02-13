@@ -2,11 +2,10 @@
     "name": "nathanwooten/autoloader",
     "description": "The simplest PSR-4 autoloader, period.",
     "license": "MIT",
-
+    "version": "2.0.55",
     "require": {
         "php": ">=7.1"
     },
-
     "authors": [
         {
             "name": "Nathan Wooten",
