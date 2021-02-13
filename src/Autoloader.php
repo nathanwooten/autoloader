@@ -3,7 +3,7 @@
 /**
  * @link      http://github.com/nathanwooten/autoloader
  * @copyright Copyright (c) 2021 Nathan Wooten (http://www.profordable.com)
- * @license   MIT License
+ * @license   MIT License (https://mit-license.org/)
  */
 
 namespace Pf\Autoloader;
@@ -46,6 +46,15 @@ class Autoloader {
     public $dir;
 
     /**
+     * The extended name/dir array
+     *
+	 * @var array $name
+	 */
+
+	public $name = [];
+
+
+    /**
      * The extension to be used when including files
      *
      * @var string $ext
@@ -67,12 +76,11 @@ class Autoloader {
      * @var boolean $registered
      */
 
-    protected $registered = false;
+    public $registered = false;
 
     /**
      * The factory method, a callable you can
-     * use to instantiate the autoloader, also
-     * calls load.
+     * use to instantiate the autoloader
      *
      */
 
@@ -83,23 +91,14 @@ class Autoloader {
 
         $params = func_get_args();
         if ( ! empty( $params ) ) {
-            $instance->load( ...func_get_args() );
+            $instance->configure( ...func_get_args() );
         }
 
         return $instance;
 
     }
 
-    /**
-     * This is the main loading function. You can provide,
-     * a list of method names and parameters to configure
-     * the autoloader any way you like and optionally
-     * register the autoloader in the callables queue.
-     * If you want to go ahead and require files for
-     * certain interfaces, provide that here ( as a list ).
-     */
-
-    public function load( $configure = [], $register = true )
+    public function configure( $configure = [] )
     {
 
         foreach ( $configure as $methodName => $params ) {
@@ -113,16 +112,23 @@ class Autoloader {
             }
         }
 
-        if ( $register ) {
-            $registered = $this->register();
-            if ( ! $registered ) {
-                return false;
-            }
+        $registered = $this->register();
+        if ( ! $registered ) {
+            return false;
         }
 
     }
 
-    public function autoload( string $interface )
+	/**
+	 * Load or autoload with this method,
+	 * this is the method to be provided
+	 * to the spl_autoload_register or
+     * it can be used directly
+	 *
+	 * @param string $interface The fully-qualified class/interface/trait name.
+	 */
+
+    public function load( string $interface )
     {
 
         $file = $this->locate( $interface );
@@ -156,7 +162,9 @@ class Autoloader {
      *        Extension:        .php
      *
      *    File Pathname:        \path\to\Application\src\Router\Router.php
-
+     *
+     * @param string $interface The class/interface/trait name to be instantiated
+     *
      */
 
     public function locate( string $interface )
@@ -164,8 +172,8 @@ class Autoloader {
 
         $interface = $this->normalize( $interface, false );
 
-        $vendor = $this->getVendor();
-        $directory = $this->getDir();
+        $vendor = $this->normalize( $this->getVendor() );
+        $directory = $this->normalize( $this->getDir() );
 
         $extension = $this->getExt();
 
@@ -195,16 +203,15 @@ class Autoloader {
     public function register() {
 
         if ( ! $this->registered ) {
-            $this->registered = spl_autoload_register( [ $this, 'autoload'], false, $this->getPrepend() );
+            $this->registered = spl_autoload_register( [ $this, 'autoload'], false, $this->prepend );
         }
 
     }
 
     /**
-     * Set the vendor portion of the namespace
+     * Set the vendor portion of the namespace declaration
      *
      * @param string $vendor 
-     *
      */
 
     public function setVendor( string $vendor )
@@ -214,18 +221,32 @@ class Autoloader {
 
     }
 
-    public function getVendor( $normalize = true )
+	/**
+	 * Get the vendor portion of the namespace declaration
+	 * 
+	 * @param boolean $normalize
+	 */
+
+    public function getVendor( $normalize = true)
     {
 
         $vendor = $this->vendor;
+        $vendor .= $this->getNameString();
 
         if ( $normalize ) {
-            $vendor = $this->normalize( $vendor );            
+            $vendor = $this->normalize( $vendor );
         }
 
-        return $vendor;
+		return $vendor;
 
     }
+
+	/**
+	 * Set the base directory of the vendor/package
+	 *
+	 * @param string $dir
+	 */
+
 
     public function setDir( $dir )
     {
@@ -234,11 +255,18 @@ class Autoloader {
 
     }
 
-    public function getDir( $normalize = true )
+	/**
+	 * Get the base directory of the vendor/package
+	 *
+	 * @param boolean $normalize
+	 */
+
+    public function getDir(  $normalize = true  )
     {
 
         $dir = $this->dir;
-        
+		$dir .= $this->getDirString();
+
         if ( $normalize ) {
             $dir = $this->normalize( $dir );
         }
@@ -247,12 +275,143 @@ class Autoloader {
 
     }
 
+	/**
+	 * Set additional name and directory to the names
+     * array and have them added the output
+	 */
+
+    public function setName( string $name = '', string $dir = '' )
+    {
+
+        $this->name[] = [ $name, $dir ];
+
+    }
+
+	/**
+	 * Get the name array of the designated
+	 * name string.
+	 *
+	 * @param string $name
+	 */
+
+	public function getName( string $name = '' )
+	{
+
+        $names = $this->getNames();
+		foreach ( $this->getNames() as $nameArray ) {
+
+			if ( $name === $nameArray ) {
+
+				return $nameArray;
+			}
+        }
+
+    }
+
+    /**
+     * Unset the provided name/dir pair
+     * based on name
+     *
+     * @param string $name
+     */
+
+    public function unsetName( $name )
+    {
+
+        $names = $this->getNames();
+        foreach ( $names as $key => $nameArray ) {
+
+            if ( $name === $nameArray[0] ) {
+
+                unset( $names[$key] );
+            }
+        }
+
+        $this->setNames( $names );
+
+    }
+
+    /**
+     * Get the names list property
+     *
+     */
+
+    public function getNames()
+    {
+
+        return $this->name;
+
+    }
+
+    /**
+     * Set the names list property
+     *
+     */
+
+
+    public function setNames( array $names )
+    {
+
+        $this->name = $names;
+
+    }
+
+	/**
+	 * Get the names portion of the name property
+	 *
+	 */
+
+    public function getNameString() {
+
+        $name = '';
+        $names = $this->getNames();
+        foreach ( $names as $key => $nameArray ) {
+
+            $name .= ( $nameArray[0] ? DIRECTORY_SEPARATOR . $nameArray[0] : '' );
+        }
+
+        return $name;
+
+    }
+
+	/**
+	 * Get the directory portion of the name property
+	 *
+	 */
+
+    public function getDirString()
+    {
+
+        $dir = '';
+        $names = $this->getNames();
+        foreach ( $names as $key => $nameArray ) {
+
+            $dir .= ( $nameArray[1] ? DIRECTORY_SEPARATOR . $nameArray[1] : '' );
+        }
+
+        return $dir;
+
+	}
+
+	/**
+	 * Set the file extension to be used by
+	 * files that will be included
+	 *
+	 * @param string $ext
+	 */
+
     public function setExt( $ext )
     {
 
         $this->ext = $ext;
 
     }
+
+    /**
+     * Get the file extension to be used by
+     * files that will be included
+     *
+     */
 
     public function getExt()
     {
@@ -264,6 +423,14 @@ class Autoloader {
 
     }
 
+	/**
+	 * Decide whether or not this autoloader,
+	 * will be prepended to the autoloader
+	 * queue, instead of the default ( append )
+	 *
+	 * @param boolean $prepend
+	 */
+
     public function setPreprend( $prepend ) {
 
         if ( $this->registered ) {
@@ -274,16 +441,26 @@ class Autoloader {
 
     }
 
+	/**
+	 * Get the prepend flag value
+	 *
+	 */
+
     public function getPrepend() {
 
         return $this->prepend;
 
     }
 
+	/**
+	 * Normalize a string, to match the desired format
+	 *
+	 */
+
     public function normalize( $item, $append = true )
     {
 
-        $item = str_replace( ['\\', '/'], DIRECTORY_SEPARATOR, rtrim( $item, DIRECTORY_SEPARATOR );
+        $item = str_replace( ['\\', '/'], DIRECTORY_SEPARATOR, rtrim( $item, DIRECTORY_SEPARATOR ) );
 
         if ( $append ) {
             $item .= DIRECTORY_SEPARATOR;
