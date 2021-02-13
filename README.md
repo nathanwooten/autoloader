@@ -10,11 +10,19 @@ You do not have to use any more information than a vendor name and a single dire
 
 ## Installation
 
+As far as installation goes, you can use composer:
+
+```
+composer require nathanwooten/autoloader
+```
+
+or you can install manually
+
 ```php
 <?php
 
 //Installation is simply including the version safe index.php file
-require USERDIR . DS . 'lib' . DS . 'vendor' . DS . 'ProfordableAutoloader' . DS . 'index.php';
+require USERDIR . DS . 'lib' . DS . 'vendor' . DS . 'Autoloader' . DS . 'index.php';
 
 $al = new Pf\Autoloader\Autoloader;
 ...
