@@ -48,10 +48,10 @@ class Autoloader {
     /**
      * The extended name/dir array
      *
-	 * @var array $name
-	 */
+     * @var array $name
+     */
 
-	public $name = [];
+    public $name = [];
 
 
     /**
@@ -98,7 +98,13 @@ class Autoloader {
 
     }
 
-    public function configure( $configure = [] )
+    /**
+     * Configure this instance of the autoloader
+     *
+     * @param array $configure
+     */
+
+    public function configure( array $configure = [] )
     {
 
         foreach ( $configure as $methodName => $params ) {
