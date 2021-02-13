@@ -227,11 +227,11 @@ class Autoloader {
 
     }
 
-	/**
-	 * Get the vendor portion of the namespace declaration
-	 * 
-	 * @param boolean $normalize
-	 */
+    /**
+     * Get the vendor portion of the namespace declaration
+     * 
+     * @param boolean $normalize
+     */
 
     public function getVendor( $normalize = true)
     {
@@ -243,15 +243,15 @@ class Autoloader {
             $vendor = $this->normalize( $vendor );
         }
 
-		return $vendor;
+        return $vendor;
 
     }
 
-	/**
-	 * Set the base directory of the vendor/package
-	 *
-	 * @param string $dir
-	 */
+    /**
+     * Set the base directory of the vendor/package
+     *
+     * @param string $dir
+     */
 
 
     public function setDir( $dir )
@@ -261,17 +261,17 @@ class Autoloader {
 
     }
 
-	/**
-	 * Get the base directory of the vendor/package
-	 *
-	 * @param boolean $normalize
-	 */
+    /**
+     * Get the base directory of the vendor/package
+     *
+     * @param boolean $normalize
+     */
 
     public function getDir(  $normalize = true  )
     {
 
         $dir = $this->dir;
-		$dir .= $this->getDirString();
+        $dir .= $this->getDirString();
 
         if ( $normalize ) {
             $dir = $this->normalize( $dir );
@@ -281,10 +281,10 @@ class Autoloader {
 
     }
 
-	/**
-	 * Set additional name and directory to the names
+    /**
+     * Set additional name and directory to the names
      * array and have them added the output
-	 */
+     */
 
     public function setName( string $name = '', string $dir = '' )
     {
@@ -293,24 +293,24 @@ class Autoloader {
 
     }
 
-	/**
-	 * Get the name array of the designated
-	 * name string.
-	 *
-	 * @param string $name
-	 */
+    /**
+     * Get the name array of the designated
+     * name string.
+     *
+     * @param string $name
+     */
 
-	public function getName( string $name = '' )
-	{
+    public function getName( string $name = '' )
+    {
 
         $names = $this->getNames();
-		foreach ( $this->getNames() as $nameArray ) {
+        foreach ( $this->getNames() as $nameArray ) {
 
-			if ( $name === $nameArray ) {
+            if ( $name === $nameArray ) {
 
-				return $nameArray;
-			}
-        }
+                return $nameArray;
+            }
+    }
 
     }
 
@@ -362,10 +362,10 @@ class Autoloader {
 
     }
 
-	/**
-	 * Get the names portion of the name property
-	 *
-	 */
+    /**
+     * Get the names portion of the name property
+     *
+     */
 
     public function getNameString() {
 
@@ -380,10 +380,10 @@ class Autoloader {
 
     }
 
-	/**
-	 * Get the directory portion of the name property
-	 *
-	 */
+    /**
+     * Get the directory portion of the name property
+     *
+     */
 
     public function getDirString()
     {
@@ -397,14 +397,14 @@ class Autoloader {
 
         return $dir;
 
-	}
+    }
 
-	/**
-	 * Set the file extension to be used by
-	 * files that will be included
-	 *
-	 * @param string $ext
-	 */
+    /**
+     * Set the file extension to be used by
+     * files that will be included
+     *
+     * @param string $ext
+     */
 
     public function setExt( $ext )
     {
@@ -429,13 +429,13 @@ class Autoloader {
 
     }
 
-	/**
-	 * Decide whether or not this autoloader,
-	 * will be prepended to the autoloader
-	 * queue, instead of the default ( append )
-	 *
-	 * @param boolean $prepend
-	 */
+    /**
+     * Decide whether or not this autoloader,
+     * will be prepended to the autoloader
+     * queue, instead of the default ( append )
+     *
+     * @param boolean $prepend
+     */
 
     public function setPreprend( $prepend ) {
 
@@ -447,10 +447,10 @@ class Autoloader {
 
     }
 
-	/**
-	 * Get the prepend flag value
-	 *
-	 */
+    /**
+     * Get the prepend flag value
+     *
+     */
 
     public function getPrepend() {
 
@@ -458,10 +458,10 @@ class Autoloader {
 
     }
 
-	/**
-	 * Normalize a string, to match the desired format
-	 *
-	 */
+    /**
+     * Normalize a string, to match the desired format
+     *
+     */
 
     public function normalize( $item, $append = true )
     {
