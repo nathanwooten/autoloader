@@ -119,14 +119,14 @@ class Autoloader {
 
     }
 
-	/**
-	 * Load or autoload with this method,
-	 * this is the method to be provided
-	 * to the spl_autoload_register or
+    /**
+     * Load or autoload with this method,
+     * this is the method to be provided
+     * to the spl_autoload_register or
      * it can be used directly
-	 *
-	 * @param string $interface The fully-qualified class/interface/trait name.
-	 */
+     *
+     * @param string $interface The fully-qualified class/interface/trait name.
+     */
 
     public function load( string $interface )
     {
