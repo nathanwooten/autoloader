@@ -26,7 +26,8 @@ In your code:
 <?php
 
 require '\composer\vendor\autoload.php';
-
+$al = new Pf\Autoloader\Autoloader;
+...
 ?>
 ```
 
