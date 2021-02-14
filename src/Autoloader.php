@@ -102,29 +102,21 @@ class Autoloader {
      * @param array $configure
      */
 
-    public function configure( array $configure = [], array $classes = [] )
+    public function configure( array $configure = [] )
     {
 
+        $result = [];
+
         // methodName and args are called here, for setting up the autoloader
-        foreach ( $configure as $methodName => $params ) {
-            $this->$methodName( ...$params );
+        foreach ( $configure as $method ) {
+
+            $methodName = $method[0];
+            $params = $method[1];
+
+            $result[ $methodName ] = $this->$methodName( ...$params );
         }
 
-        // loop through array of classes to automatically load
-        if ( isset( $classes ) ) {
-            foreach ( $classes as $class ) {
-
-                $this->load( $class );
-            }
-        }
-
-        // of course we register the autoloader in the configure method
-        $registered = $this->register();
-        if ( ! $registered ) {
-            return false;
-        }
-
-        return true;        
+        return $result;
 
     }
 
