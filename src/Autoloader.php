@@ -108,12 +108,12 @@ class Autoloader {
         $result = [];
 
         // methodName and args are called here, for setting up the autoloader
-        foreach ( $configure as $method ) {
+        foreach ( $configure as $key => $method ) {
 
             $methodName = $method[0];
             $params = $method[1];
 
-            $result[ $methodName ] = $this->$methodName( ...$params );
+            $result[$key][ $methodName ] = $this->$methodName( ...$params );
         }
 
         return $result;
