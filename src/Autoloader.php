@@ -8,6 +8,11 @@
 
 namespace Pf\Autoloader;
 
+/**
+ * For file finding, this package uses str_replace, instead
+ * of using a prefix.
+ */
+
 use function str_replace;
 
 use function basename;
@@ -98,10 +103,12 @@ class Autoloader {
     public function configure( array $configure = [] )
     {
 
+        // methodName and args are called here, for setting up the autoloader
         foreach ( $configure as $methodName => $params ) {
             $this->$methodName( ...$params );
         }
 
+        // loop through array of classes to automatically load
         if ( isset( $configure['classes'] ) ) {
 
             $classes = $configure['classes'];
@@ -111,6 +118,7 @@ class Autoloader {
             }
         }
 
+        // of course we register the autoloader in the configure method
         $registered = $this->register();
         if ( ! $registered ) {
             return false;
@@ -130,10 +138,13 @@ class Autoloader {
     public function load( string $interface )
     {
 
+        // locate file, return null if none found
         $file = $this->locate( $interface );
         if ( $file ) {
+            // require once, no error suppression
             require_once $file;
 
+            // return interface on success
             return $interface;
         }
 
@@ -169,26 +180,32 @@ class Autoloader {
     public function locate( string $interface )
     {
 
+        // interface normalized without trailing DIRECTORY_SEPARATOR
         $interface = $this->normalize( $interface, false );
 
+        // automatically normalized
         $vendor = $this->getVendor();
         $directory = $this->getDir();
 
+        // extension-normalized automatically
         $extension = $this->getExt();
 
+        // the complete pathname of the file containing the desired class
         $file = str_replace(
 
             // replace vendor with directory
             $vendor,
             $directory,
 
-            // in interrace
+            // in interface
             $interface
 
         ) . $extension;
 
+        // exists?
         if ( file_exists( $file ) ) {
 
+            // return full pathname
             return $file;
         }
 
