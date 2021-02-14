@@ -81,12 +81,11 @@ For configuring and loading you could try:
 ```php
 <?php
 
-$al = new Autoloader;
-$al->configure(
+$al = Autoloader::factory( [
     'setVendor'     => [ 'Website' ],
     'setDir'        => [ USERDIR . '\lib\src' ]
     'setPrepend     => true
- );
+] );
 ```
 
 Also you can actually register the autoloader with the load method as well.
@@ -94,9 +93,31 @@ Also you can actually register the autoloader with the load method as well.
 ```php
 <?php
 
-$al = new Autoloader;
-$al->configure(
+$al = Autoloader::factory( [
     'setVendor'     => [ 'Website' ],
     'setDir'        => [ USERDIR . '\lib\src' ],
     'register'      => []
-);
+] );
+```
+If you want to extend the autoloader, to pre-include values for the properties or modify the autoloader some other way, you might try something like this:
+
+```
+<?php
+
+class PfLoaderApplication extends Autoloader {
+
+    public $vendor = 'Pf\Application';
+    public $dir = USERDIR . '\lib\vendor\application';
+
+    public function load( $interface ) {
+    
+        if ( 0 === strpos( $interface, $this->getVendor() ) {
+            return parent::load( $interface );
+        }
+    
+    }
+
+}
+```
+
+That about wraps up the examples for, when changes are made to the autoloader your will see them here.
