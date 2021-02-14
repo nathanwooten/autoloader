@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @link      http://github.com/nathanwooten/autoloader
+ * @link      https://github.com/nathanwooten/autoloader
  * @copyright Copyright (c) 2021 Nathan Wooten (http://www.profordable.com)
  * @license   MIT License (https://mit-license.org/)
  */
