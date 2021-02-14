@@ -84,10 +84,10 @@ For configuring and loading you could try:
 <?php
 
 $al = new Autoloader;
-$al->load(
-    'setVendor' => [ 'Website' ],
-    'setDir' => [ USERDIR . '\lib\src' ]
-    'setPrepend => true
+$al->configure(
+    'setVendor'     => [ 'Website' ],
+    'setDir'        => [ USERDIR . '\lib\src' ]
+    'setPrepend     => true
  );
 ```
 
@@ -97,8 +97,8 @@ Also you can actually register the autoloader with the load method as well.
 <?php
 
 $al = new Autoloader;
-$al->load(
-    'setVendor' => [ 'Website' ],
-    'setDir' => [ USERDIR . '\lib\src' ],
-    'register' => []
+$al->configure(
+    'setVendor'     => [ 'Website' ],
+    'setDir'        => [ USERDIR . '\lib\src' ],
+    'register'      => []
 );
