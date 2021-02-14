@@ -237,7 +237,6 @@ class Autoloader {
     {
 
         $vendor = $this->vendor;
-        $vendor .= $this->getNameString();
 
         if ( $normalize ) {
             $vendor = $this->normalize( $vendor );
@@ -271,128 +270,9 @@ class Autoloader {
     {
 
         $dir = $this->dir;
-        $dir .= $this->getDirString();
 
         if ( $normalize ) {
             $dir = $this->normalize( $dir );
-        }
-
-        return $dir;
-
-    }
-
-    /**
-     * Set additional name and directory to the names
-     * array and have them added the output
-     */
-
-    public function setName( string $name = '', string $dir = '' )
-    {
-
-        $this->name[] = [ $name, $dir ];
-
-    }
-
-    /**
-     * Get the name array of the designated
-     * name string.
-     *
-     * @param string $name
-     */
-
-    public function getName( string $name = '' )
-    {
-
-        $names = $this->getNames();
-        foreach ( $this->getNames() as $nameArray ) {
-
-            if ( $name === $nameArray ) {
-
-                return $nameArray;
-            }
-    }
-
-    }
-
-    /**
-     * Unset the provided name/dir pair
-     * based on name
-     *
-     * @param string $name
-     */
-
-    public function unsetName( $name )
-    {
-
-        $names = $this->getNames();
-        foreach ( $names as $key => $nameArray ) {
-
-            if ( $name === $nameArray[0] ) {
-
-                unset( $names[$key] );
-            }
-        }
-
-        $this->setNames( $names );
-
-    }
-
-    /**
-     * Get the names list property
-     *
-     */
-
-    public function getNames()
-    {
-
-        return $this->name;
-
-    }
-
-    /**
-     * Set the names list property
-     *
-     */
-
-
-    public function setNames( array $names )
-    {
-
-        $this->name = $names;
-
-    }
-
-    /**
-     * Get the names portion of the name property
-     *
-     */
-
-    public function getNameString() {
-
-        $name = '';
-        $names = $this->getNames();
-        foreach ( $names as $key => $nameArray ) {
-
-            $name .= ( $nameArray[0] ? DIRECTORY_SEPARATOR . $nameArray[0] : '' );
-        }
-
-        return $name;
-
-    }
-
-    /**
-     * Get the directory portion of the name property
-     *
-     */
-
-    public function getDirString()
-    {
-
-        $dir = '';
-        $names = $this->getNames();
-        foreach ( $names as $key => $nameArray ) {
-
-            $dir .= ( $nameArray[1] ? DIRECTORY_SEPARATOR . $nameArray[1] : '' );
         }
 
         return $dir;
