@@ -221,7 +221,7 @@ class Autoloader {
     public function register() {
 
         if ( ! $this->registered ) {
-            $this->registered = spl_autoload_register( [ $this, 'autoload'], false, $this->getPrepend() );
+            $this->registered = spl_autoload_register( [ $this, 'load'], false, $this->getPrepend() );
         }
 
     }
