@@ -46,15 +46,6 @@ class Autoloader {
     public $dir;
 
     /**
-     * The extended name/dir array
-     *
-     * @var array $name
-     */
-
-    public $name = [];
-
-
-    /**
      * The extension to be used when including files
      *
      * @var string $ext
