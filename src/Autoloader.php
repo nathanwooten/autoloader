@@ -103,9 +103,11 @@ class Autoloader {
         }
 
         if ( isset( $configure['classes'] ) ) {
+
             $classes = $configure['classes'];
             foreach ( $classes as $class ) {
-                $this->autoload( $class );
+
+                $this->load( $class );
             }
         }
 
