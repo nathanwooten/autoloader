@@ -88,7 +88,8 @@ class Autoloader {
 
         $params = func_get_args();
         if ( ! empty( $params ) ) {
-            $instance->configure( ...func_get_args() );
+
+            $instance->configure( ...$params );
         }
 
         return $instance;
