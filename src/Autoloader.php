@@ -18,6 +18,7 @@ use function str_replace;
 use function basename;
 use function class_exists;
 use function file_exists;
+use function func_get_args;
 use function ltrim;
 use function rtrim;
 use function spl_autoload_register;
