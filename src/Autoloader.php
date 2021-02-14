@@ -102,7 +102,7 @@ class Autoloader {
      * @param array $configure
      */
 
-    public function configure( array $configure = [] )
+    public function configure( array $configure = [], array $classes = [] )
     {
 
         // methodName and args are called here, for setting up the autoloader
@@ -111,9 +111,7 @@ class Autoloader {
         }
 
         // loop through array of classes to automatically load
-        if ( isset( $configure['classes'] ) ) {
-
-            $classes = $configure['classes'];
+        if ( isset( $classes ) ) {
             foreach ( $classes as $class ) {
 
                 $this->load( $class );
@@ -125,6 +123,8 @@ class Autoloader {
         if ( ! $registered ) {
             return false;
         }
+
+        return true;        
 
     }
 
