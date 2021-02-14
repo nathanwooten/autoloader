@@ -1,6 +1,4 @@
 
-## Please run update: 2/14/2021 or later
-
 # The profordable.com Autoloader
 A very simple PSR-4 autoloader. Loads any PSR-4 compliant package ( recursive ) with just a vendor name and directory.
 
