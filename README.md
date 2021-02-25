@@ -1,9 +1,7 @@
 
 # The profordable.com Autoloader
 
-Launched a slightly modified interface on Valentines Day 2021. After Valentines Day 2021 no more updates will be made to the interface that conflict with the Valentines Day v2.1.0 version. Profordable.com recommends using the setters and getters directly as a general rule, at least until updates end at midnight.
-
-A very simple PSR-4 autoloader. Loads any PSR-4 compliant package ( recursive ) with just a vendor name and directory.
+A very simple PSR-4 autoloader. Loads any PSR-4 compliant package ( recursive ) with just a vendor-name ( basespace ) and directory.
 
 ---
 With this package you can autoload and require-manually ( optional ) the files of other packages, quickly and easily.
