@@ -4,6 +4,7 @@ namespace Pf\Autoloader;
 
 function matchSpace( $alias, $directories = [] )
 {
+  $match = '';
   $dirs = [];
   $separator = DIRECTORY_SEPARATOR;
   $alias = normalize( 'trim', $alias );
@@ -25,6 +26,15 @@ function matchSpace( $alias, $directories = [] )
       }
     }
   }
+  $count = 0;
+  foreach ( $dir as $directory => $dArray ) {
+    $matchCount = count( $dArray )
+    if ( $count < $matchCount ) {
+      $count = $matchCount;
+      $match = $directory;
+    }    
+  }
+  return $directory;
 }
 
 function normalize( $dest, $item, ...$args )
