@@ -17,7 +17,10 @@ function matchSpace( $alias, $directories = [] )
       $directory = normalize( 'replace', $directory, $separator );
       $dirArray = explode( $separator, $directory );
       if ( in_array( $name, $dirArray ) ) {
-        if ( isset( $dirs[ $directory ] ) ) {
+        if ( ! isset( $dirs[ $directory ] ) ) {
+            $dirs[ $directory ] = [];
+			$dirs[ $directory ][ $key ] = $name;
+        } else {
           end( $dirs[$directory] );
           if ( key( $dirs[ $directory ] ) === $key -1 ) {
             $dirs[ $directory ][ $key ] = $name;
@@ -27,7 +30,6 @@ function matchSpace( $alias, $directories = [] )
     }
   }
   $count = 0;
-var_dump( $dirs );
   foreach ( $dirs as $directory => $dArray ) {
     $matchCount = count( $dArray );
     if ( $count < $matchCount ) {
