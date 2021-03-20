@@ -16,26 +16,23 @@ class AutoloaderPackage extends AutoloaderAbstract
 
 	protected $space;
 
+	protected $basespace;
+	protected $baseDir;
+	protected $vendorDir = '';
+
 	protected $registered = false;
 
 	public function __construct( string $basespace, string $baseDir, $register = true, string $vendorDir = '' )
 	{
-/*
+
 		$this->setVendorDir( $vendorDir );
 
 		$this->setBasespace( $basespace );
 		$this->setDir( $dir );
-*/
 
 		if ( Autoloader::getInstance()->hasBasespace( $basespace ) ) {
 			throw new Exception( 'This package already exists' );
 		}
-/*
-		$adir = AutoloaderDir::factory();
-		$space = $adir->spaceSetup( $basespace, $baseDir, $vendorDir );
-
-		$this->space = $space;
-*/
 
 		$realBase = realpath( $baseDir );
 
@@ -157,27 +154,6 @@ class AutoloaderPackage extends AutoloaderAbstract
 		}
 
 		return false;
-
-/*
-		$interfaceParts = explode( '\\', $interface );
-
-		$nameSoFar = '';
-		$hasBaseSpace = false;
-
-		foreach ( $interfaceParts as $part ) {
-
-			if ( ! $hasBasepace ) {
-				$nameSoFar .= '\\' . $part;
-				if ( $basespace === $nameSoFar ) {
-					$file .= $nameSoFar;
-					$nameSoFar = '';
-					$hasBasespace = true;
-				}
-			} else {
-				$nameSoFar .= '\\' . $part;
-			}
-		}
-*/
 
 	}
 
