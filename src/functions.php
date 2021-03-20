@@ -10,7 +10,6 @@ function matchSpace( $alias, $directories = [] )
   $alias = normalize( 'trim', $alias );
   $alias = normalize( 'replace', $alias, $separator );
   $aliasArray = explode( $separator, $alias );
-  $path = '';
   foreach ( $aliasArray as $key => $name ) {
     foreach ( $directories as $directory ) {
       $directory = normalize( 'trim', $directory );
