@@ -4,21 +4,27 @@ namespace Pf\Autoloader;
 
 function matchSpace( $alias, $directories = [] )
 {
+
   $matches = [];
   $dirs = [];
   $separator = DIRECTORY_SEPARATOR;
+
   $alias = normalize( 'trim', $alias );
   $alias = normalize( 'replace', $alias, $separator );
+
   $aliasArray = explode( $separator, $alias );
   foreach ( $aliasArray as $key => $name ) {
     foreach ( $directories as $directory ) {
+
       $directory = normalize( 'trim', $directory );
       $directory = normalize( 'replace', $directory, $separator );
       $dirArray = explode( $separator, $directory );
+
       if ( in_array( $name, $dirArray ) ) {
+
         if ( ! isset( $dirs[ $directory ] ) ) {
             $dirs[ $directory ] = [];
-			$dirs[ $directory ][ $key ] = $name;
+            $dirs[ $directory ][ $key ] = $name;
         } else {
           end( $dirs[$directory] );
           if ( key( $dirs[ $directory ] ) === $key -1 ) {
@@ -30,15 +36,18 @@ function matchSpace( $alias, $directories = [] )
   }
   $count = 0;
   foreach ( $dirs as $directory => $dArray ) {
-    $matchCount = count( $dArray );
-    if ( $count < $matchCount ) {
+ 
+   $matchCount = count( $dArray );
+
+   if ( $count < $matchCount ) {
       $count = $matchCount;
-	  $matches = [ $directory ]; 
+      $matches = [ $directory ];
     } elseif ( $count === $matchCount && 0 < $count ) {
-		$matches[] = $directory;
-	}
+      $matches[] = $directory;
+    }
   }
   return $matches;
+
 }
 
 function normalize( $dest, $item, ...$args )
