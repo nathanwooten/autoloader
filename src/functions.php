@@ -11,11 +11,18 @@ function matchSpace( $alias, $directories = [] )
   $aliasArray = explode( $separator, $alias );
   $path = '';
   foreach ( $aliasArray as $key => $name ) {
-    $path .= ( 0 < $key ? $separator : '' ) . $name;
     foreach ( $directories as $directory ) {
       $directory = normalize( 'trim', $directory );
       $directory = normalize( 'replace', $directory, $separator );
       $dirArray = explode( $separator, $directory );
+      if ( in_array( $name, $dirArray ) ) {
+        if ( isset( $dir[ $directory ] ) ) {
+          end( $dir[$directory] );
+          if ( key( $dir[ $directory ] === $key -1 ) {
+            $dir[ $directory ][ $key ] = $name;
+          }
+        }
+      }
     }
   }
 }
