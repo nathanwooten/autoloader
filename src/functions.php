@@ -4,7 +4,7 @@ namespace Pf\Autoloader;
 
 function matchSpace( $alias, $directories = [] )
 {
-  $match = '';
+  $matches = [];
   $dirs = [];
   $separator = DIRECTORY_SEPARATOR;
   $alias = normalize( 'trim', $alias );
@@ -17,24 +17,27 @@ function matchSpace( $alias, $directories = [] )
       $directory = normalize( 'replace', $directory, $separator );
       $dirArray = explode( $separator, $directory );
       if ( in_array( $name, $dirArray ) ) {
-        if ( isset( $dir[ $directory ] ) ) {
-          end( $dir[$directory] );
-          if ( key( $dir[ $directory ] === $key -1 ) {
-            $dir[ $directory ][ $key ] = $name;
+        if ( isset( $dirs[ $directory ] ) ) {
+          end( $dirs[$directory] );
+          if ( key( $dirs[ $directory ] ) === $key -1 ) {
+            $dirs[ $directory ][ $key ] = $name;
           }
         }
       }
     }
   }
   $count = 0;
-  foreach ( $dir as $directory => $dArray ) {
-    $matchCount = count( $dArray )
+var_dump( $dirs );
+  foreach ( $dirs as $directory => $dArray ) {
+    $matchCount = count( $dArray );
     if ( $count < $matchCount ) {
       $count = $matchCount;
-      $match = $directory;
-    }    
+	  $matches = [ $directory ]; 
+    } elseif ( $count === $matchCount && 0 < $count ) {
+		$matches[] = $directory;
+	}
   }
-  return $directory;
+  return $matches;
 }
 
 function normalize( $dest, $item, ...$args )
@@ -49,12 +52,12 @@ function normalize( $dest, $item, ...$args )
       } else {
         $trim = '\\' . 'trim'; 
       }
-      $item = $trim( $item, '/', '\\' );
+      $item = $trim( $item, '/\\' );
       break;
 
     case 'replace':
 
-      $item = str_replace( [ '\\', '/' ], isset( $args[0] ) ? $args[0], DIRECTORY_SEPARATOR, $item );
+      $item = str_replace( [ '\\', '/' ], isset( $args[0] ) ? $args[0] : DIRECTORY_SEPARATOR, $item );
       break;
 
   }
@@ -62,8 +65,3 @@ function normalize( $dest, $item, ...$args )
   return  $item;
 
 }
-
-
-
-
-
