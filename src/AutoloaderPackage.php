@@ -18,17 +18,13 @@ class AutoloaderPackage extends AutoloaderAbstract
 
 	protected $basespace;
 	protected $baseDir;
-	protected $vendorDir = '';
 
 	protected $registered = false;
 
 	public function __construct( string $basespace, string $baseDir, $register = true, string $vendorDir = '' )
 	{
 
-		$this->setVendorDir( $vendorDir );
-
 		$this->setBasespace( $basespace );
-		$this->setDir( $dir );
 
 		if ( Autoloader::getInstance()->hasBasespace( $basespace ) ) {
 			throw new Exception( 'This package already exists' );
@@ -59,6 +55,7 @@ class AutoloaderPackage extends AutoloaderAbstract
 			}
 		}
 
+		$this->setDir( $baseDir );
 		$this->space( $basespace, $baseDir );
 
 		if ( $register ) {
