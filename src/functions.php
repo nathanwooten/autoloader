@@ -45,6 +45,7 @@ function matchSpace( $alias, $directories = [] )
     } elseif ( $count === $matchCount && 0 < $count ) {
       $matches[] = $directory;
     }
+    ++$count;
   }
   return $matches;
 
