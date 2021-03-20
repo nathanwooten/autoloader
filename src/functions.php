@@ -4,23 +4,19 @@ namespace Pf\Autoloader;
 
 function matchSpace( $alias, $directories = [] )
 {
+  $directories = [];
   $separator = DIRECTORY_SEPARATOR;
   $alias = normalize( 'trim', $alias );
   $alias = normalize( 'replace', $alias, $separator );
   $aliasArray = explode( $separator, $alias );
   $path = '';
   foreach ( $aliasArray as $key => $name ) {
-    $path .= $name . $separator
+    $path .= ( 0 < $key ? $separator : '' ) . $name;
     $dir = $directories[$key];
     $dir = normalize( 'trim', $directory );
     $dir = normalize( 'replace', $directory, $separator );
     $dirArray = explode( $separator, $dir );
-    if ( in_array( $name, $dirArray ) ) {
-      
-    }
-  
-  
-  
+
   }
 }
 
