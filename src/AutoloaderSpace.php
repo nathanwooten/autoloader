@@ -49,10 +49,10 @@ class AutoloaderSpace extends AutoloaderAbstract
 
 	}
 
-	public function getName()
+	public function getName( bool $quiet = null )
 	{
 
-		$quiet = $this->quiet;
+		$quiet = ! is_null( $quiet ) ? $quiet : $this->quiet;
 
 		if ( ! $quiet ) {
 			return $this->name;
