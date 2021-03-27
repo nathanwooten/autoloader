@@ -45,8 +45,15 @@ class AutoloaderSpace
 
 	public function setDir( $dir ) {
 
+		if ( $this->isBasespace ) {
 
+			$real = realpath( $dir );
+			if ( ! $real ) {
+				$this->isBasespace = false;
+			}
+		}
 
+		$this->dir = $dir;
 
 	}
 
