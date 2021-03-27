@@ -149,11 +149,7 @@ class AutoloaderSpace
 	{
 
 		$sub = $this->sub;
-		$next = next( $this->sub );
-
-		if ( $sub === $next ) {
-			return false;
-		}
+		$next = next( $sub );
 
 		return $next;
 
@@ -163,11 +159,7 @@ class AutoloaderSpace
 	{
 
 		$sub = $this->sub;
-		$prev = prev( $this->sub );
-
-		if ( $sub === $prev ) {
-			return false;
-		}
+		$prev = prev( $sub );
 
 		return $prev;
 
