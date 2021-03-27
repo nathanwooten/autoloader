@@ -72,19 +72,19 @@ class AutoloaderSpace
 		return $dir;
 
 	}
-	
-	public function getBy( $id, $useValue = false )
+
+	public function getBy( $id, $useValue = false, array $args = [] )
 	{
 
 		$space = false;
 
-		$space = $this->getByName( $id )
-		if ( $space ) {
+		if ( ! $space ) {
+			$space = $this->getByName( $id );
 			$by = 'name';
 		}
 
-		$space = $this->getByDir( $dir );
-		if ( $space ) {
+		if ( ! $space ) {
+			$space = $this->getByDir( $id );
 			$by = 'dir';
 		}
 
@@ -98,13 +98,13 @@ class AutoloaderSpace
 						$getter = 'getName';
 						break;
 				}
-				$value = $space->$getter();
+				$value = $space->$getter( ...$args );
 				$space = $value;
 			}
 		} else {
 			throw new Exception( 'Unknown id' );
 		}
-
+		
 		return $space;
 
 	}
