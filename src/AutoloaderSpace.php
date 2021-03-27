@@ -2,10 +2,17 @@
 
 namespace Pf\Autoloader;
 
+use Exception;
+
 class AutoloaderSpace
 {
 
-	protected $sub;
+	protected $name = '';
+	protected $dir = '';
+
+	protected $sub = [];
+
+	protected $isBasespace = false;
 
 	public function __construct( $name, $dir, $parent = null ) {
 
@@ -14,11 +21,18 @@ class AutoloaderSpace
 
 		if ( ! is_null( $parent ) ) {
 			$this->setParent( $parent );
+		} else {
+			if ( realpath( $dir ) ) {
+				$this->isBasespace = true;
+			}
 		}
-
 	}
 
 	public function add( $name, $dir ) {
+
+		if ( $this->hasName( $name ) ) {
+			throw new Exception( 'Space already exists within parent' );
+		}
 
 		$this->sub[] = new AutoloaderSpace( $name, $dir, $this );
 
@@ -56,6 +70,15 @@ class AutoloaderSpace
 		}
 
 		return $prev;
+
+	}
+
+	public function hasName()
+	{
+
+		foreach ( $this->sub as $space ) {
+			
+		}
 
 	}
 
