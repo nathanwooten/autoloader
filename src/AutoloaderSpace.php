@@ -53,9 +53,28 @@ class AutoloaderSpace
 			if ( $name === $curName ) {
 				return $current;
 			}
-
 			$current = $this->getNext();
 		}
+
+		return false;
+
+	}
+
+	public function getByDir( $dir )
+	{
+
+		$this->reset();
+
+		$current = $this->getCurrent();
+		while ( $current ) {
+			$curDir = $current->getDir();
+			if ( $name === $curDir ) {
+				return $current;
+			}
+			$current = $this->getNext();
+		}
+
+		return false;
 
 	}
 
