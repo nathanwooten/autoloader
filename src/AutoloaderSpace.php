@@ -45,9 +45,16 @@ class AutoloaderSpace
 
 	public function getByName( $name ) {
 
+		$this->reset();
+
+		$current = $this->getCurrent();
+		while ( $current ) {
+			$curName = $current->getName();
 
 
 
+			$current = $this->getNext();
+		}
 
 	}
 
@@ -75,7 +82,7 @@ class AutoloaderSpace
 
 	}
 
-	public function get()
+	public function getCurrent() {
 	{
 
 		return current( $this->sub );
@@ -107,6 +114,20 @@ class AutoloaderSpace
 		}
 
 		return $prev;
+
+	}
+
+	public function doReset()
+	{
+
+		reset( $this->sub );
+
+	}
+
+	public function doEnd()
+	{
+
+		end( $this->sub );
 
 	}
 
