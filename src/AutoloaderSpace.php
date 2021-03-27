@@ -43,6 +43,42 @@ class AutoloaderSpace
 
 	}
 
+	public function getBy( $id, $useValue = false )
+	{
+
+		$space = false;
+
+		$space = $this->getByName( $id )
+		if ( $space ) {
+			$by = 'name';
+		}
+
+		$space = $this->getByDir( $dir );
+		if ( $space ) {
+			$by = 'dir';
+		}
+
+		if ( $space ) {
+			if ( $useValue ) {
+				switch ( $by ) {
+					case 'name':
+						$getter = 'getDir';
+						break;
+					case 'dir':
+						$getter = 'getName';
+						break;
+				}
+				$value = $space->$getter();
+				$space = $value;
+			}
+		} else {
+			throw new Exception( 'Unknown id' );
+		}
+
+		return $space;
+
+	}
+
 	public function getByName( $name ) {
 
 		$this->reset();
@@ -68,7 +104,7 @@ class AutoloaderSpace
 		$current = $this->getCurrent();
 		while ( $current ) {
 			$curDir = $current->getDir();
-			if ( $name === $curDir ) {
+			if ( $dir === $curDir ) {
 				return $current;
 			}
 			$current = $this->getNext();
