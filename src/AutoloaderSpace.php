@@ -146,7 +146,7 @@ class AutoloaderSpace
 		$this->reset();
 
 		$current = $this->getCurrent();
-		while ( $current ) {
+		while ( $current && $this->key() ) {
 			$curDir = $current->getDir();
 			if ( $dir === $curDir ) {
 				return $current;
