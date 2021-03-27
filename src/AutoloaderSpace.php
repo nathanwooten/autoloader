@@ -32,14 +32,21 @@ class AutoloaderSpace
 
 	}
 
-	public function next()
+	public function getNext()
 	{
 
-		return next( $this->sub );
+		$sub = $this->sub;
+		$next = next( $this->sub );
+
+		if ( $sub === $next ) {
+			return false;
+		}
+
+		return $next;
 
 	}
 
-	public function previous()
+	public function getPrev()
 	{
 
 		return prev( $this->sub );
