@@ -43,6 +43,14 @@ class AutoloaderSpace
 
 	}
 
+	public function getByName( $name ) {
+
+
+
+
+
+	}
+
 	public function setDir( $dir ) {
 
 		if ( $this->isBasespace ) {
