@@ -5,6 +5,8 @@ namespace Pf\Autoloader;
 class AutoloaderSpace
 {
 
+	protected $sub;
+
 	public function __construct( $name, $dir, $parent = null ) {
 
 		$this->setName( $name );
@@ -23,6 +25,13 @@ class AutoloaderSpace
 
 	}
 
+	public function get()
+	{
+
+		return current( $this->sub );
+
+	}
+
 	public function next()
 	{
 
@@ -30,11 +39,18 @@ class AutoloaderSpace
 
 	}
 
+	public function previous()
+	{
 
+		return prev( $this->sub );
 
+	}
+
+	public function getSub()
+	{
+
+		return $this->sub;
+
+	}
 
 }
-
-
-
-
