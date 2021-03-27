@@ -23,6 +23,16 @@ class AutoloaderSpace
 
 	}
 
+	public function next()
+	{
+
+		return next( $this->sub );
+
+	}
+
+
+
+
 }
 
 
