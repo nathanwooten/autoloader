@@ -16,9 +16,6 @@ class AutoloaderSpace
 
 	public function __construct( $name, $dir, $parent = null ) {
 
-		$this->setName( $name );
-		$this->setDir( $dir );
-
 		if ( ! is_null( $parent ) ) {
 			$this->setParent( $parent );
 		} else {
@@ -26,6 +23,31 @@ class AutoloaderSpace
 				$this->isBasespace = true;
 			}
 		}
+
+		$this->setName( $name );
+		$this->setDir( $dir );
+
+	}
+
+	public function setName()
+	{
+
+		return $this->dir;
+
+	}
+
+	public function getName()
+	{
+
+		return $this->name;
+
+	}
+
+	public function setDir( $dir ) {
+
+
+
+
 	}
 
 	public function add( $name, $dir ) {
@@ -73,12 +95,20 @@ class AutoloaderSpace
 
 	}
 
-	public function hasName()
+	public function hasName( string $name )
 	{
 
+		if ( '' === $name ) return false;
+
 		foreach ( $this->sub as $space ) {
-			
+			$spaceName = $space->getName();
+
+			if ( $name === $spaceName ) {
+				return true;
+			}
 		}
+
+		return false;
 
 	}
 
