@@ -43,6 +43,36 @@ class AutoloaderSpace
 
 	}
 
+	public function setDir( $dir ) {
+
+		if ( $this->isBasespace ) {
+
+			$real = realpath( $dir );
+			if ( ! $real ) {
+				$this->isBasespace = false;
+			}
+		}
+
+		$this->dir = $dir;
+
+	}
+
+	public function getDir( $deep = false ) {
+
+		if ( ! $deep ) {
+			return $this->dir;
+		}
+
+		$dir = $this->dir;
+		$parent = $this->getParent();
+		while ( $parent ) {
+			$dir = $parent->getDir() . $dir;
+		}
+
+		return $dir;
+
+	}
+	
 	public function getBy( $id, $useValue = false )
 	{
 
@@ -111,20 +141,6 @@ class AutoloaderSpace
 		}
 
 		return false;
-
-	}
-
-	public function setDir( $dir ) {
-
-		if ( $this->isBasespace ) {
-
-			$real = realpath( $dir );
-			if ( ! $real ) {
-				$this->isBasespace = false;
-			}
-		}
-
-		$this->dir = $dir;
 
 	}
 
