@@ -36,10 +36,21 @@ class AutoloaderSpace
 
 	}
 
-	public function getName()
+	public function getName( $deep = false )
 	{
 
-		return $this->name;
+		if ( ! $deep ) {
+			return $this->name;
+		}
+
+		$name = $this->name;
+		$parent = $this->getParent();
+		while ( $parent ) {
+			$name = $parent->getName() . '\\' . $name;
+			$parent = $parent->getParent();
+		}
+
+		return $dir;
 
 	}
 
@@ -66,8 +77,11 @@ class AutoloaderSpace
 		$dir = $this->dir;
 		$parent = $this->getParent();
 		while ( $parent ) {
-			$dir = $parent->getDir() . $dir;
+			$dir = $parent->getDir() . DIRECTORY_SEPARATOR . $dir;
+			$parent = $parent->getParent();
 		}
+
+		$dir = realpath( $dir );
 
 		return $dir;
 
@@ -154,14 +168,20 @@ class AutoloaderSpace
 
 	}
 
-	public function getCurrent() {
+	public function current() {
 	{
 
 		return current( $this->sub );
 
 	}
 
-	public function getNext()
+	public function key() {
+
+		return key( $this->sub );
+
+	}
+	
+	public function next()
 	{
 
 		$sub = $this->sub;
@@ -171,7 +191,7 @@ class AutoloaderSpace
 
 	}
 
-	public function getPrev()
+	public function prev()
 	{
 
 		$sub = $this->sub;
@@ -181,14 +201,14 @@ class AutoloaderSpace
 
 	}
 
-	public function doReset()
+	public function reset()
 	{
 
 		reset( $this->sub );
 
 	}
 
-	public function doEnd()
+	public function end()
 	{
 
 		end( $this->sub );
