@@ -128,7 +128,7 @@ class AutoloaderSpace
 		$this->reset();
 
 		$current = $this->getCurrent();
-		while ( $current ) {
+		while ( $current && $this->key() ) {
 			$curName = $current->getName();
 			if ( $name === $curName ) {
 				return $current;
