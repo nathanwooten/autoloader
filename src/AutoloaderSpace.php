@@ -50,8 +50,9 @@ class AutoloaderSpace
 		$current = $this->getCurrent();
 		while ( $current ) {
 			$curName = $current->getName();
-
-
+			if ( $name === $curName ) {
+				return $current;
+			}
 
 			$current = $this->getNext();
 		}
