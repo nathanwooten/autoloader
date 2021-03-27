@@ -87,6 +87,23 @@ class AutoloaderSpace
 
 	}
 
+	public function setParent( AutoloaderSpace $parent )
+	{
+
+		$this->parent = $parent;
+		$this->parent->setSub( $this );
+
+		$this->isBasespace = false;
+
+	}
+
+	public function getParent()
+	{
+
+		return $this->parent;
+
+	}
+
 	public function getBy( $id, $useValue = false, array $args = [] )
 	{
 
