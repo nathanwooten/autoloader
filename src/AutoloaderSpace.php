@@ -22,7 +22,6 @@ class AutoloaderSpace
 
 		$this->sub[] = new AutoloaderSpace( $name, $dir, $this );
 
-
 	}
 
 	public function get()
@@ -49,7 +48,14 @@ class AutoloaderSpace
 	public function getPrev()
 	{
 
-		return prev( $this->sub );
+		$sub = $this->sub;
+		$prev = prev( $this->sub );
+
+		if ( $sub === $prev ) {
+			return false;
+		}
+
+		return $prev;
 
 	}
 
