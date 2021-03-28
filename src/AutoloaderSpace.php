@@ -14,7 +14,7 @@ class AutoloaderSpace
 
 	protected $isBasespace = false;
 
-	public function __construct( $name, $dir, $parent = null ) {
+	public function __construct( $name, $dir, AutoloaderSpace $parent = null ) {
 
 		if ( ! is_null( $parent ) ) {
 			$this->setParent( $parent );
@@ -29,10 +29,10 @@ class AutoloaderSpace
 
 	}
 
-	public function setName()
+	public function setName( $name )
 	{
 
-		return $this->dir;
+		$this->name = $name;
 
 	}
 
@@ -91,7 +91,10 @@ class AutoloaderSpace
 	{
 
 		$this->parent = $parent;
-		$this->parent->setSub( $this );
+
+		if ( ! $this->parent->hasSub( $this->getName() ) ) {
+			$this->parent->setSub( $this );
+		}
 
 		$this->isBasespace = false;
 
@@ -101,6 +104,40 @@ class AutoloaderSpace
 	{
 
 		return $this->parent;
+
+	}
+
+	public function add( $name, $dir )
+	{
+
+		if ( $this->hasName( $name ) ) {
+			throw new Exception( 'Space already exists within parent' );
+		}
+
+		$this->setSub( new AutoloaderSpace( $name, $dir, $this ) );
+
+	}
+
+	public function setSub( AutoloaderSpace $space ) {
+
+		$this->sub[] = $space;
+
+	}
+
+	public function hasSub( $name ) {
+
+		$this->reset();
+
+		$current = $this->current();
+		while ( $current && $this->key() ) {
+			$curName = $current->getName();
+			if ( $name === $curName ) {
+				return true;
+			}
+			$current = $this->getNext();
+		}
+
+		return false;
 
 	}
 
@@ -144,7 +181,7 @@ class AutoloaderSpace
 
 		$this->reset();
 
-		$current = $this->getCurrent();
+		$current = $this->current();
 		while ( $current && $this->key() ) {
 			$curName = $current->getName();
 			if ( $name === $curName ) {
@@ -162,7 +199,7 @@ class AutoloaderSpace
 
 		$this->reset();
 
-		$current = $this->getCurrent();
+		$current = $this->current();
 		while ( $current && $this->key() ) {
 			$curDir = $current->getDir();
 			if ( $dir === $curDir ) {
@@ -175,17 +212,7 @@ class AutoloaderSpace
 
 	}
 
-	public function add( $name, $dir ) {
-
-		if ( $this->hasName( $name ) ) {
-			throw new Exception( 'Space already exists within parent' );
-		}
-
-		$this->sub[] = new AutoloaderSpace( $name, $dir, $this );
-
-	}
-
-	public function current() {
+	public function current()
 	{
 
 		return current( $this->sub );
