@@ -16,6 +16,8 @@ class AutoloaderSpace
 
 	public function __construct( $name, $dir, AutoloaderSpace $parent = null ) {
 
+		$this->setName( $name );
+
 		if ( ! is_null( $parent ) ) {
 			$this->setParent( $parent );
 		} else {
@@ -24,7 +26,6 @@ class AutoloaderSpace
 			}
 		}
 
-		$this->setName( $name );
 		$this->setDir( $dir );
 
 	}
@@ -124,17 +125,42 @@ class AutoloaderSpace
 
 	}
 
-	public function hasSub( $name ) {
+	public function hasName( string $name )
+	{
+
+		if ( '' === $name ) return false;
+
+		foreach ( $this->sub as $space ) {
+			$spaceName = $space->getName();
+
+			if ( $name === $spaceName ) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+
+	public function hasSub( $name )
+	{
+
+		if ( '' === $name ) return false;
 
 		$this->reset();
 
+		$key = $this->key();
 		$current = $this->current();
-		while ( $current && $this->key() ) {
+		while ( $current && ( 0 === $key || $key ) ) {
 			$curName = $current->getName();
+
 			if ( $name === $curName ) {
 				return true;
 			}
-			$current = $this->getNext();
+
+			$this->next();
+			$key = $this->key();
+			$current = $this->current();
 		}
 
 		return false;
@@ -181,13 +207,16 @@ class AutoloaderSpace
 
 		$this->reset();
 
+		$key = $this->key();
 		$current = $this->current();
-		while ( $current && $this->key() ) {
+		while ( $current && ( 0 === $key || $key ) ) {
 			$curName = $current->getName();
 			if ( $name === $curName ) {
 				return $current;
 			}
-			$current = $this->getNext();
+			$this->next();
+			$key = $this->key();
+			$current = $this->current();
 		}
 
 		return false;
@@ -199,13 +228,16 @@ class AutoloaderSpace
 
 		$this->reset();
 
+		$key = $this->key();
 		$current = $this->current();
-		while ( $current && $this->key() ) {
+		while ( $current && ( 0 === $key || $key ) ) {
 			$curDir = $current->getDir();
 			if ( $dir === $curDir ) {
 				return $current;
 			}
-			$current = $this->getNext();
+			$this->next();
+			$key = $this->key();
+			$current = $this->current();
 		}
 
 		return false;
@@ -228,20 +260,14 @@ class AutoloaderSpace
 	public function next()
 	{
 
-		$sub = $this->sub;
-		$next = next( $sub );
-
-		return $next;
+		return next( $this->sub );
 
 	}
 
 	public function prev()
 	{
 
-		$sub = $this->sub;
-		$prev = prev( $sub );
-
-		return $prev;
+		return prev( $this->sub );
 
 	}
 
@@ -256,23 +282,6 @@ class AutoloaderSpace
 	{
 
 		end( $this->sub );
-
-	}
-
-	public function hasName( string $name )
-	{
-
-		if ( '' === $name ) return false;
-
-		foreach ( $this->sub as $space ) {
-			$spaceName = $space->getName();
-
-			if ( $name === $spaceName ) {
-				return true;
-			}
-		}
-
-		return false;
 
 	}
 
