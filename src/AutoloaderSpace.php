@@ -93,7 +93,8 @@ class AutoloaderSpace
 
 		$this->parent = $parent;
 
-		if ( ! $this->parent->hasSub( $this->getName() ) ) {
+		$has = ! $this->parent->hasSub( $this->getName() );
+		if ( ! $has ) {
 			$this->parent->setSub( $this );
 		}
 
@@ -167,7 +168,7 @@ class AutoloaderSpace
 
 	}
 
-	public function getBy( $id, $useValue = false, array $args = [] )
+	public function get( $id, $useValue = false, array $args = [] )
 	{
 
 		$space = false;
