@@ -109,12 +109,13 @@ class AutoloaderSpace
 
 	}
 
-	public function iterate( $value, $key, & $array, $args = [], ...$extra )
+	public function iterate( & $array, callable $callable, $args = [] )
 	{
 		$result = [];
 
-		
-		
+		foreach ( $array as $key => $value ) {
+			$result[] = $callable( $value, $key, $array, ...$args );
+		}
 
 		return $result;
 		
