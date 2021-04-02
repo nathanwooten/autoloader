@@ -109,6 +109,17 @@ class AutoloaderSpace
 
 	}
 
+	public function iterate( & $array, $keyval = [], $args = [], ...$extra )
+	{
+		$result = [];
+
+		
+		
+
+		return $result;
+		
+	}
+	
 	public function add( $name, $dir )
 	{
 
