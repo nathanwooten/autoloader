@@ -109,7 +109,7 @@ class AutoloaderSpace
 
 	}
 
-	public function iterate( & $array, $keyval = [], $args = [], ...$extra )
+	public function iterate( $value, $key, & $array, $args = [], ...$extra )
 	{
 		$result = [];
 
