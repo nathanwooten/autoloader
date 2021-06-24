@@ -16,6 +16,11 @@ use nathanwooten\Filter\{
 
 };
 
+$index = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'index.php'
+if ( file_exists( $index ) ) {
+	require_once $index;
+}
+
 use Exception;
 
 use function file_exists;
