@@ -1,13 +1,5 @@
 <?php
 
-/**
- * @link      https://github.com/nathanwooten/autoloader
- * @copyright Copyright (c) 2021 Nathan Wooten (http://www.profordable.com)
- * @license   MIT License (https://mit-license.org/)
- */
-
-<?php
-
 namespace nathanwooten\Autoloader;
 
 use nathanwooten\Filter\{
@@ -16,18 +8,12 @@ use nathanwooten\Filter\{
 
 };
 
-$index = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'index.php'
-if ( file_exists( $index ) ) {
-	require_once $index;
-}
-
 use Exception;
 
 use function file_exists;
 use function in_array;
 use function is_array;
 use function is_dir;
-use function isset;
 use function rtrim;
 use function scandir;
 use function spl_autoload_register;
@@ -53,28 +39,11 @@ class Autoloader {
 
 	public function set( $namespace, $directory ) {
 
-		if ( in_array( $namespace, $this->multi ) || ( isset( $this->package[ $namespace ] ) && $directory !== $this->package[ $namespace ] ) ) {
-
-			if ( ! isset( $this->package[ $namespace ] ) ) {
-				$this->package[ $namespace ] = [];
-			}
-
-			if ( ! is_array( $this->package[ $namespace ] ) ) {
-
-				$firstDir = $this->package[ $namespace ];
-				$this->package[ $namespace ] = [];
-
-				$this->package[ $namespace ][] = $firstDir;
-			}
-
-			$this->package[ $namespace ][] = $directory;
-			$this->multi[] = $namespace;
-
+		if ( ! isset( $this->package[ $namespace ] ) ) {
+			$this->package[ $namespace ] = [];
 		}
 
-		$this->package[ $namespace ] = $directory;
-
-		return true;
+		$this->package[ $namespace ][] = $directory;
 
 	}
 
@@ -83,17 +52,13 @@ class Autoloader {
 
 		$result = [];
 
-		foreach ( $array as $namespace => $directory ) {
+		foreach ( $array as $namespace => $directories ) {
 
 			$result[ $namespace ] = [];
 
-			if ( ! is_array( $directory ) ) {
-				$directory = (array) $directory;
-			}
+			foreach ( $directories as $directory ) {
 
-			foreach ( $directory as $dir ) {
-
-				$result[ $namespace ][] = $this->set( $namespace, $dir );
+				$result[ $namespace ][] = $this->set( $namespace, $directory );
 			}
 		}
 
@@ -111,8 +76,6 @@ class Autoloader {
 
 			return $interface;
 		}
-
-		throw new Exception( 'Unable to locate class: ' . $interface );
 
 	}
 
