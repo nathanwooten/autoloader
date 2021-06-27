@@ -1,112 +1,353 @@
 <?php
 
-namespace nathanwooten\Autoloader;
+/**
+ * @link      https://github.com/nathanwooten/autoloader
+ * @copyright Copyright (c) 2021 Nathan Wooten (http://www.profordable.com)
+ * @license   MIT License (https://mit-license.org/)
+ */
 
-use nathanwooten\Filter\{
+namespace Pf\Autoloader;
 
-	Filter
+/**
+ * For file finding, this package uses str_replace, instead
+ * of using a prefix.
+ */
 
-};
-
-use Exception;
-
-use function file_exists;
-use function in_array;
-use function is_array;
-use function is_dir;
-use function rtrim;
-use function scandir;
-use function spl_autoload_register;
 use function str_replace;
+
+use function basename;
+use function class_exists;
+use function file_exists;
+use function func_get_args;
+use function ltrim;
+use function rtrim;
+use function spl_autoload_register;
+
+    global $classLoaded;
+    $classLoaded = __NAMESPACE__ . '\\' . basename( __FILE__, '.php' );
+
+if ( class_exists( $classLoaded, false ) ) {
+
+    unset( $classLoaded );
+    return;
+}
 
 class Autoloader {
 
-	public $package = [];
-	public $library = null;
 
-	public $multi = [
-		''
-	];
+    /**
+     * The namespace of the vendor/package
+     *
+     * @var string $vendor
+     */
 
-	public function __construct( $libraryDirectory = null )
-	{
+    public $vendor;
 
-		$this->library = $libraryDirectory;
+    /**
+     * The base directory of the vendor/package
+     *
+     * @var string $base
+     */
 
-		spl_autoload_register( [ $this, 'load' ], true, true );
+    public $dir;
 
-	}
+    /**
+     * The extension to be used when including files
+     *
+     * @var string $ext
+     */
 
-	public function set( $namespace, $directory ) {
+    public $ext = 'php';
 
-		if ( ! isset( $this->package[ $namespace ] ) ) {
-			$this->package[ $namespace ] = [];
-		}
+    /**
+     * Prepend the autoloader ( the vendor ) in PHP's autoloader queue
+     *
+     * @var string $prepend
+     */
 
-		$this->package[ $namespace ][] = $directory;
+    public $prepend = false;
 
-	}
+    /**
+     * Indicates that the autoloader has been registered or not
+     *
+     * @var boolean $registered
+     */
 
-	public function setArray( array $array )
-	{
+    public $registered = false;
 
-		$result = [];
+    /**
+     * The factory method, a callable you can
+     * use to instantiate the autoloader
+     *
+     */
 
-		foreach ( $array as $namespace => $directories ) {
+    public static function factory()
+    {
 
-			$result[ $namespace ] = [];
+        $instance = new static;
 
-			foreach ( $directories as $directory ) {
+        $params = func_get_args();
+        if ( ! empty( $params ) ) {
 
-				$result[ $namespace ][] = $this->set( $namespace, $directory );
-			}
-		}
+            $instance->configure( ...$params );
+        }
 
-		return $result;
+        return $instance;
 
-	}
+    }
 
-	public function load( $interface )
-	{
+    /**
+     * Configure this instance of the autoloader
+     *
+     * @param array $configure
+     */
 
-		$require_once = $this->locate( $interface );
-		if ( $require_once ) {
+    public function configure( array $configure = [] )
+    {
 
-			require_once $require_once;
+        $result = [];
 
-			return $interface;
-		}
+        // methodName and args are called here, for setting up the autoloader
+        foreach ( $configure as $key => $method ) {
 
-	}
+            $methodName = $method[0];
+            $params = $method[1];
 
-	public function locate( $interface )
-	{
+            $result[$key][ $methodName ] = $this->$methodName( ...$params );
+        }
 
-		$packages = $this->package;
+        return $result;
 
-		foreach ( $packages as $namespace => $directory ) {
+    }
 
-			if ( ! is_array( $directory ) ) {
-				$directory = (array) $directory;
-			}
+    /**
+     * Load or autoload with this method,
+     * this is the method to be provided
+     * to the spl_autoload_register or
+     * it can be used directly
+     *
+     * @param string $interface The fully-qualified class/interface/trait name.
+     */
 
-			$namespace = $this->normalize( $namespace );
+    public function load( string $interface )
+    {
 
-			foreach ( $directory as $dir ) {
+        // locate file, return null if none found
+        $file = $this->locate( $interface );
+        if ( $file ) {
+            // require once, no error suppression
+            require_once $file;
 
-				$dir = $this->normalize( $dir );
+            // return interface on success
+            return $interface;
+        }
 
-				$file = str_replace( $namespace, $dir, $interface ) . '.php';
+        return false;
 
-				if ( file_exists( $file ) ) {
-					return $file;
-				}
-			}
-		}
+    }
 
-	}
+    /**
+     * This is where the magic happens,
+     *
+     * Example
+     *
+     *    Interface:            Pf\Application\Router\Router
+     *
+     *    Preset:
+     *
+     *        Vendor:            Pf\Application
+     *
+     *            replace above with below
+     *
+     *        Directory:        \path\to\Application\src
+     *
+     *        ---
+     *
+     *        Extension:        .php
+     *
+     *    File Pathname:        \path\to\Application\src\Router\Router.php
+     *
+     * @param string $interface The class/interface/trait name to be instantiated
+     *
+     */
 
-	public function normalize( $item, $append = true )
+    public function locate( string $interface )
+    {
+
+        // interface normalized without trailing DIRECTORY_SEPARATOR
+        $interface = $this->normalize( $interface, false );
+
+        // automatically normalized
+        $vendor = $this->getVendor();
+        $directory = $this->getDir();
+
+        // extension-normalized automatically
+        $extension = $this->getExt();
+
+        // the complete pathname of the file containing the desired class
+        $file = str_replace(
+
+            // replace vendor with directory
+            $vendor,
+            $directory,
+
+            // in interface
+            $interface
+
+        ) . $extension;
+
+        // exists?
+        if ( file_exists( $file ) ) {
+
+            // return full pathname
+            return $file;
+        }
+
+    }
+
+    /**
+     * Registers the autoloader in the autoloader queue
+     *
+     */
+
+    public function register() {
+
+        if ( ! $this->registered ) {
+            $this->registered = spl_autoload_register( [ $this, 'load'], false, $this->getPrepend() );
+        }
+
+    }
+
+    /**
+     * Set the vendor portion of the namespace declaration
+     *
+     * @param string $vendor 
+     */
+
+    public function setVendor( string $vendor )
+    {
+
+        $this->vendor = $vendor;
+
+    }
+
+    /**
+     * Get the vendor portion of the namespace declaration
+     * 
+     * @param boolean $normalize
+     */
+
+    public function getVendor( $normalize = true)
+    {
+
+        $vendor = $this->vendor;
+
+        if ( $normalize ) {
+            $vendor = $this->normalize( $vendor );
+        }
+
+        return $vendor;
+
+    }
+
+    /**
+     * Set the base directory of the vendor/package
+     *
+     * @param string $dir
+     */
+
+
+    public function setDir( $dir )
+    {
+
+        $this->dir = $dir;
+
+    }
+
+    /**
+     * Get the base directory of the vendor/package
+     *
+     * @param boolean $normalize
+     */
+
+    public function getDir(  $normalize = true  )
+    {
+
+        $dir = $this->dir;
+
+        if ( $normalize ) {
+            $dir = $this->normalize( $dir );
+        }
+
+        return $dir;
+
+    }
+
+    /**
+     * Set the file extension to be used by
+     * files that will be included
+     *
+     * @param string $ext
+     */
+
+    public function setExt( $ext )
+    {
+
+        $this->ext = $ext;
+
+    }
+
+    /**
+     * Get the file extension to be used by
+     * files that will be included
+     *
+     */
+
+    public function getExt()
+    {
+
+        $ext = $this->ext;
+        $ext = '.' . ltrim( $ext, '.' );
+
+        return $ext;
+
+    }
+
+    /**
+     * Decide whether or not this autoloader,
+     * will be prepended to the autoloader
+     * queue, instead of the default ( append )
+     *
+     * @param boolean $prepend
+     */
+
+    public function setPreprend( $prepend ) {
+
+        if ( $this->registered ) {
+            return;
+        }
+
+        $this->prepend = (bool) $prepend;
+
+    }
+
+    /**
+     * Get the prepend flag value
+     *
+     */
+
+    public function getPrepend() {
+
+        return isset( $this->prepend ) ? $this->prepend : null;
+
+    }
+
+    /**
+     * Normalize a string, to match the desired format
+     *
+     */
+
+    public function normalize( $item, $append = true )
     {
 
         $item = str_replace( ['\\', '/'], DIRECTORY_SEPARATOR, rtrim( $item, DIRECTORY_SEPARATOR ) );
@@ -118,49 +359,5 @@ class Autoloader {
         return $item;
 
     }
-
-	public function loadIndexes( $filters = [] )
-	{
-
-		$dir = $this->library;
-
-		if ( ! is_array( $filters ) ) {
-			$filters = [ $filters ];
-		}
-
-		$scan = scandir( $dir );
-		foreach ( $scan as $item ) {
-
-			if ( '.' === $item || '..' === $item ) continue;
-
-			$item = $this->filter( $item, ...$filters );
-			if ( ! $item ) $continue;
-
-			$path = $dir . $item;
-
-			if ( is_dir( $path ) ) {
-				$index = rtrim( $path, DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR . 'index.php';
-			}
-
-			if ( file_exists( $index ) ) {
-
-				$result = require_once $index;
-
-				if ( ! $result ) {
-					throw new Exception( 'Error loading package: ' . $item );
-				}
-			}
-		}
-	}
-
-	public function filter( $item, Filter ...$filters ) {
-
-		foreach ( $filters as $filter ) {
-			$item = $filter( $item );
-		}
-
-		return $item;
-
-	}
 
 }
