@@ -1,15 +1,15 @@
+
 {
     "name": "nathanwooten/autoloader",
-    "description": "A simple autoloader for your all your interfaces.",
+    "description": "An nice little autoloader/filesystem-base that defines packages with interfaces and files, starting with a base namespace and directory for each.",
     "license": "MIT",
-    "version": "2.0",
     "require": {
         "php": ">=7.0"
     },
     "authors": [
         {
             "name": "Nathan Wooten",
-            "homepage": "https://github.com/nathanwooten/"
+            "homepage": "https://github.com/nathanwooten"
         }
     ]
 }
