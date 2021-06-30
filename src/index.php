@@ -1,9 +1,7 @@
 <?php
 
-/**
- * Version safe include, the index file is always here, despite the version, to load the autoloader class
- */
+// Version safe include
 
-require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'Autoloader.php';
+require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'required.php';
 
 ?>
