@@ -8,6 +8,15 @@
 
 namespace nathanwooten\Autoloader;
 
+use nathanwooten\Autoloader\{
+
+	AutoloaderInterface,
+	AutolaoderPackage
+
+};
+
+use Exception;
+
 use function basename;
 use function array_key_exists;
 use function file_exists;
@@ -26,13 +35,12 @@ if ( class_exists( $classLoaded, false ) ) {
     return;
 }
 
-class Autoloader {
+class Autoloader implements AutoloaderInterface {
 
 	protected $library;
 	protected $package = [];
 
 	public $namespace = null;
-	public $directory = null;
 
 	public function __construct( $libraryDirectory = null )
 	{
@@ -76,7 +84,7 @@ class Autoloader {
         $file = $this->locate( $interface );
         if ( $file ) {
 
-			$package = $this->package( $this->namespace, $this->directory );
+			$package = $this->getPackage( $this->namespace );
 			$package->createInterface( $interface, $file );
         }
 
@@ -94,7 +102,6 @@ class Autoloader {
 			$directory = $this->getDirectory() . $package->getDirectory();
 
 			$this->namespace = $namespace;
-			$this->directory = $directory;
 
 			$file = str_replace( $namespace, $directory, $interface ) . '.php';
 			if ( file_exists( $file ) ) {
