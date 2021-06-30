@@ -78,17 +78,17 @@ class Autoloader implements AutoloaderInterface {
 
 	}
 
-    public function load( string $interface )
-    {
+ 	public function load( string $interface )
+	{
 
-        $file = $this->locate( $interface );
-        if ( $file ) {
+		$file = $this->locate( $interface );
+		if ( $file ) {
 
 			$package = $this->getPackage( $this->namespace );
 			$package->createInterface( $interface, $file );
-        }
+		}
 
-    }
+	}
 
 	public function locate( $interface )
 	{
@@ -128,17 +128,17 @@ class Autoloader implements AutoloaderInterface {
 
 	}
 
-    public function normalize( $item, $append = true, $separator = DIRECTORY_SEPARATOR )
-    {
+	public function normalize( $item, $append = true, $separator = DIRECTORY_SEPARATOR )
+	{
 
-        $item = str_replace( ['\\', '/'], $separator, rtrim( $item, $separator ) );
+ 		$item = str_replace( ['\\', '/'], $separator, rtrim( $item, $separator ) );
 
-        if ( $append ) {
-            $item .= $separator;
-        }
+  		if ( $append ) {
+			$item .= $separator;
+		}
 
-        return $item;
+		return $item;
 
-    }
+	}
 
 }
