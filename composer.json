@@ -1,6 +1,6 @@
 {
     "name": "nathanwooten/autoloader",
-    "description": "An nice little autoloader that defines packages with interfaces and files, starting with a base namespace and directory.",
+    "description": "An nice little autoloader/filesystem-base that defines packages with interfaces and files, starting with a base namespace and directory.",
     "license": "MIT",
     "require": {
         "php": ">=7.0"
